@@ -6,4 +6,15 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="MySql.Data" Version="9.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProgrammingOData.Domain\ProgrammingOData.Domain.csproj" />
+    <ProjectReference Include="..\ProgrammingOData.Models\ProgrammingOData.Models.csproj" />
+  </ItemGroup>
+
 </Project>

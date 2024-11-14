@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProgrammingOData.Models\ProgrammingOData.Models.csproj" />
+  </ItemGroup>
+
 </Project>

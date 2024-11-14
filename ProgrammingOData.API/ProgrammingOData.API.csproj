@@ -11,17 +11,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProgrammingOData.Domain\ProgrammingOData.Domain.csproj" />
+    <ProjectReference Include="..\ProgrammingOData.Infrastructure\ProgrammingOData.Infrastructure.csproj" />
     <ProjectReference Include="..\ProgrammingOData.Models\ProgrammingOData.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
 
 </Project>
