@@ -25,4 +25,13 @@ public class PRLenguageRepository : IPRLanguageRepository
         var languages = await connection.QueryAsync<PrLanguage>(query);
         return languages.ToList();
     }
+
+    public async Task<PrLanguage> GetById(int id)
+    {
+        // To - Do - replace query for store procedure
+        using var connection = new MySqlConnection(_connectionString);
+        var query = "SELECT Id, Name, YearCreated, Creator FROM prlanguages WHERE Id = @Id";
+        var language = await connection.QueryFirstOrDefaultAsync<PrLanguage>(query, new { Id = id });
+        return language;
+    }
 }
