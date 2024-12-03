@@ -62,5 +62,6 @@
   <ItemGroup>
     <None Include="MariaDb\Prlanguages.txt" />
     <None Include="MariaDb\Data\PrlanguagesData.txt" />
+    <None Include="MariaDb\Users.txt" />
   </ItemGroup>
 </Project>

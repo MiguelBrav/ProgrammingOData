@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -21,10 +21,6 @@
     <ProjectReference Include="..\ProgrammingOData.Domain\ProgrammingOData.Domain.csproj" />
     <ProjectReference Include="..\ProgrammingOData.Infrastructure\ProgrammingOData.Infrastructure.csproj" />
     <ProjectReference Include="..\ProgrammingOData.Models\ProgrammingOData.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Commands\" />
   </ItemGroup>
 
 </Project>

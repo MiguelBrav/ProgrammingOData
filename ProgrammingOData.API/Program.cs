@@ -18,6 +18,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddMediatR(a => a.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 builder.Services.AddScoped<IPRLanguageRepository, PRLenguageRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
 
 builder.Services.AddControllers().AddOData(opt =>
 {

@@ -8,13 +8,13 @@ namespace ProgrammingOData.Infrastructure.Repositories;
 
 public class PRLenguageRepository : IPRLanguageRepository
 {
-    private readonly IConfiguration configuration;
+    private readonly IConfiguration _configuration;
     private readonly string _connectionString;
 
-    public PRLenguageRepository(IConfiguration _configuration)
+    public PRLenguageRepository(IConfiguration configuration)
     {
-        configuration = _configuration;
-        _connectionString = configuration.GetConnectionString("MySql") ?? string.Empty;
+        _configuration = configuration;
+        _connectionString = _configuration.GetConnectionString("MySql") ?? string.Empty;
     }
 
     public async Task<List<PrLanguage>> GetAll()
