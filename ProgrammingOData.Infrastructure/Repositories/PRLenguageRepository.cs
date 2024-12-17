@@ -34,4 +34,24 @@ public class PRLenguageRepository : IPRLanguageRepository
         var language = await connection.QueryFirstOrDefaultAsync<PrLanguage>(query, new { Id = id });
         return language;
     }
+
+    public async Task<int> Create(PrLanguage language)
+    {
+        // To - Do - replace query for store procedure
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        INSERT INTO prlanguages (Name, YearCreated, Creator)
+        VALUES (@Name, @YearCreated, @Creator);
+        SELECT LAST_INSERT_ID();
+        ";
+
+        language.Id = await connection.ExecuteScalarAsync<int>(query, new
+        {
+            Name = language.Name,
+            YearCreated = language.YearCreated,
+            Creator = language.Creator
+        });
+
+        return language.Id;
+    }
 }

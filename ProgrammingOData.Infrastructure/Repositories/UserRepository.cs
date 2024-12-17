@@ -39,14 +39,14 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task<User> ValidateUserAndRole(string email)
+    public async Task<UserWithRol> ValidateUserAndRole(string email)
     {
         using var connection = new MySqlConnection(_connectionString);
         var query = @"SELECT u.UserId, u.Email, u.Password, ur.UserRole
                     FROM users u
                     INNER JOIN usersrole ur ON u.UserId = ur.UserId
                     WHERE Email = @Email";
-        var user = await connection.QueryFirstOrDefaultAsync<User>(query, new { Email = email });
+        var user = await connection.QueryFirstOrDefaultAsync<UserWithRol>(query, new { Email = email });
         return user;
     }
 }

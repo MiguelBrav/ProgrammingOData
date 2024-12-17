@@ -9,4 +9,13 @@ public class PrLanguage
     public int YearCreated { get; set; }
 
     public string Creator { get; set; } = string.Empty;
+
+    public PrLanguage() { }
+
+    public PrLanguage(string name, int yearCreated, string creator)
+    {
+        Name = name;
+        YearCreated = yearCreated;
+        Creator = creator;
+    }
 }

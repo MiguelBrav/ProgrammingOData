@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using ProgrammingOData.API.Commands;
+using ProgrammingOData.API.Helpers;
 using ProgrammingOData.API.Queries;
+using ProgrammingOData.Models.DTOS;
 using ProgrammingOData.Models.Entities;
 
 namespace ProgrammingOData.API.Controllers
@@ -57,6 +60,25 @@ namespace ProgrammingOData.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(BasicAuthFilter))]
+        public async Task<IActionResult> CreateLanguage(CreatePrLanguageDTO createLanguage)
+        {
+            try
+            {
+                CreatePrLanguageCommand userCommand = new CreatePrLanguageCommand
+                {
+                    createLanguage = createLanguage
+                };
+
+                return await _mediator.Send(userCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);          
             }
         }
     }

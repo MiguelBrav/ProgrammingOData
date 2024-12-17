@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.OData;
+using ProgrammingOData.API.Helpers;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Infrastructure.Repositories;
 
@@ -20,7 +21,7 @@ builder.Services.AddMediatR(a => a.RegisterServicesFromAssembly(typeof(Program).
 builder.Services.AddScoped<IPRLanguageRepository, PRLenguageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
-
+builder.Services.AddScoped<BasicAuthFilter>();
 builder.Services.AddControllers().AddOData(opt =>
 {
     opt.Select().Filter().OrderBy().SetMaxTop(100).SkipToken();
