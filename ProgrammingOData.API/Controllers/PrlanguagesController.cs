@@ -81,5 +81,24 @@ namespace ProgrammingOData.API.Controllers
                 return BadRequest("An error occurred " + ex);          
             }
         }
+
+        [HttpPut]
+        [ServiceFilter(typeof(BasicAuthFilter))]
+        public async Task<IActionResult> UpdateLanguage(UpdatePrLanguageDTO updateLanguage)
+        {
+            try
+            {
+                UpdatePrLanguageCommand userCommand = new UpdatePrLanguageCommand
+                {
+                    updateLanguage = updateLanguage
+                };
+
+                return await _mediator.Send(userCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
     }
 }

@@ -54,4 +54,14 @@ public class PRLenguageRepository : IPRLanguageRepository
 
         return language.Id;
     }
+
+    public async Task Update(PrLanguage language)
+    {
+        // To - Do - replace query for store procedure
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        UPDATE prlanguages SET Name = @Name, YearCreated = @YearCreated, Creator = @Creator WHERE Id = @Id; ";
+        
+        await connection.ExecuteAsync(query, language);
+    }
 }

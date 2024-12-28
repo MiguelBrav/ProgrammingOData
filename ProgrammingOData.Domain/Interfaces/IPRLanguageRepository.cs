@@ -7,4 +7,5 @@ public interface IPRLanguageRepository
     Task<List<PrLanguage>> GetAll();
     Task<PrLanguage> GetById(int Id);
     Task<int> Create(PrLanguage language);
+    Task Update(PrLanguage language);
 }
