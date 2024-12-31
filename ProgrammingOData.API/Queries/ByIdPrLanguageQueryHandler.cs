@@ -16,7 +16,7 @@ public class ByIdPrLanguageQueryHandler : IRequestHandler<ByIdPrLanguageQuery, S
 
     public async Task<SingleResult<PrLanguage>> Handle(ByIdPrLanguageQuery request, CancellationToken cancellationToken)
     {
-        PrLanguage language = await _prLanguageRepository.GetById(request.Id) ?? new PrLanguage();
+        PrLanguage language = await _prLanguageRepository.GetById(request.Id);
 
         return SingleResult.Create(new List<PrLanguage> { language }.AsQueryable());
     }

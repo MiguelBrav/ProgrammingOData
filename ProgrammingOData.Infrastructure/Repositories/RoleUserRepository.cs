@@ -25,7 +25,18 @@ public class RoleUserRepository : IRoleUserRepository
         INSERT INTO usersrole (UserId, UserRole)
         VALUES (@UserId, @UserRole);";
 
-        await connection.ExecuteAsync(query, roleUser); 
+        await connection.ExecuteAsync(query, roleUser);
+    }
+    public async Task Update(RoleUser roleUser)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        // To - Do - replace query for store procedure
+        var query = @"
+        UPDATE usersrole
+        SET UserRole = @UserRole
+        WHERE UserId = @UserId;";
+
+        await connection.ExecuteAsync(query, roleUser);
     }
 
 }

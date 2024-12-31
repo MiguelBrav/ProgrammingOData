@@ -69,12 +69,12 @@ namespace ProgrammingOData.API.Controllers
         {
             try
             {
-                CreatePrLanguageCommand userCommand = new CreatePrLanguageCommand
+                CreatePrLanguageCommand createPrLanguageCommand = new CreatePrLanguageCommand
                 {
                     createLanguage = createLanguage
                 };
 
-                return await _mediator.Send(userCommand);
+                return await _mediator.Send(createPrLanguageCommand);
             }
             catch (Exception ex)
             {
@@ -88,12 +88,31 @@ namespace ProgrammingOData.API.Controllers
         {
             try
             {
-                UpdatePrLanguageCommand userCommand = new UpdatePrLanguageCommand
+                UpdatePrLanguageCommand updatePrLanguageCommand = new UpdatePrLanguageCommand
                 {
                     updateLanguage = updateLanguage
                 };
 
-                return await _mediator.Send(userCommand);
+                return await _mediator.Send(updatePrLanguageCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [HttpDelete]
+        [ServiceFilter(typeof(BasicAuthFilter))]
+        public async Task<IActionResult> DeleteLanguage([FromODataUri] int key)
+        {
+            try
+            {
+                DeletePrLanguageCommand deletePrLanguageCommand = new DeletePrLanguageCommand
+                {
+                    deleteLanguage = new DeleteByIdDTO { Id = key } 
+                };
+
+                return await _mediator.Send(deletePrLanguageCommand);
             }
             catch (Exception ex)
             {

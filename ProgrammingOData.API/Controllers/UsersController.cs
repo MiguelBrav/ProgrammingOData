@@ -45,12 +45,30 @@ namespace ProgrammingOData.API.Controllers
         {
             try
             {
-                LoginUserCommand userCommand = new LoginUserCommand
+                LoginUserCommand loginUserCommand = new LoginUserCommand
                 {
                     loginUser = loginUserDTO
                 };
 
-                return await _mediator.Send(userCommand);
+                return await _mediator.Send(loginUserCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [HttpPut("role")]
+        public async Task<IActionResult> UserToAdmin(UserRoleDTO userRoleDTO)
+        {
+            try
+            {
+                UserRoleCommand userToAdminCommand = new UserRoleCommand
+                {
+                    userWithRol = userRoleDTO
+                };
+
+                return await _mediator.Send(userToAdminCommand);
             }
             catch (Exception ex)
             {
