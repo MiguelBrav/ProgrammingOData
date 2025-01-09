@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
+using ProgrammingOData.Models.Models;
 
 namespace ProgrammingOData.Infrastructure.Repositories;
 
@@ -48,5 +49,15 @@ public class UserRepository : IUserRepository
                     WHERE Email = @Email";
         var user = await connection.QueryFirstOrDefaultAsync<UserWithRol>(query, new { Email = email });
         return user;
+    }
+
+    public async Task<List<UserRoleDashboard>> GetAll()
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"SELECT u.UserId, u.Email, u.UserName, u.DateOfBirth, ur.UserRole
+                    FROM users u
+                    INNER JOIN usersrole ur ON u.UserId = ur.UserId";
+        var users = await connection.QueryAsync<UserRoleDashboard>(query);
+        return users.ToList();
     }
 }

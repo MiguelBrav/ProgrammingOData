@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Models.Entities;
 using ProgrammingOData.API.Helpers.Enums;
+using ProgrammingOData.Models.Models;
 
 namespace ProgrammingOData.API.Helpers;
 

@@ -1,13 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
-using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ProgrammingOData.API.Commands;
+using ProgrammingOData.API.Helpers;
 using ProgrammingOData.API.Queries;
 using ProgrammingOData.Models.DTOS;
-using ProgrammingOData.Models.Entities;
+using ProgrammingOData.Models.Models;
 
 namespace ProgrammingOData.API.Controllers
 {
@@ -20,6 +19,25 @@ namespace ProgrammingOData.API.Controllers
         public UsersController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [EnableQuery]
+        [HttpGet]
+        [ServiceFilter(typeof(BasicAuthFilter))]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                AllUsersQuery allUsersQuery = new AllUsersQuery();
+
+                IQueryable<UserRoleDashboard> users = await _mediator.Send(allUsersQuery);
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
         }
 
         [HttpPost]
@@ -59,7 +77,8 @@ namespace ProgrammingOData.API.Controllers
         }
 
         [HttpPut("role")]
-        public async Task<IActionResult> UserToAdmin(UserRoleDTO userRoleDTO)
+        [ServiceFilter(typeof(BasicAuthFilter))]
+        public async Task<IActionResult> UpdateUserRole(UserRoleDTO userRoleDTO)
         {
             try
             {
