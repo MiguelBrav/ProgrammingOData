@@ -21,6 +21,9 @@ builder.Services.AddMediatR(a => a.RegisterServicesFromAssembly(typeof(Program).
 builder.Services.AddScoped<IPRLanguageRepository, PRLenguageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
+builder.Services.AddScoped<ISupportedLocaleRepository, SupportedLocaleRepository>();
+builder.Services.AddScoped<IPRLanguageDescriptionRepository, PRLanguageDescriptionRepository>();
+
 builder.Services.AddScoped<BasicAuthFilter>();
 builder.Services.AddControllers().AddOData(opt =>
 {

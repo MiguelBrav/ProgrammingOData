@@ -25,6 +25,24 @@ public class PRLenguageRepository : IPRLanguageRepository
         var languages = await connection.QueryAsync<PrLanguage>(query);
         return languages.ToList();
     }
+    public async Task<List<PrLanguage>> GetAllByLocale(string locale)
+    {
+        // To - Do - replace query for store procedure
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        SELECT 
+            pl.Id, 
+            pl.Name, 
+            pl.YearCreated, 
+            pl.Creator, 
+            COALESCE(pld.Description, '') AS Description
+        FROM prlanguages pl
+        LEFT JOIN prlanguagedescriptions pld ON pl.Id = pld.LanguageId AND pld.Locale = @Locale
+    ";
+
+        var languages = await connection.QueryAsync<PrLanguage>(query, new { Locale = locale });
+        return languages.ToList();
+    }
 
     public async Task<PrLanguage> GetById(int id)
     {
@@ -32,6 +50,26 @@ public class PRLenguageRepository : IPRLanguageRepository
         using var connection = new MySqlConnection(_connectionString);
         var query = "SELECT Id, Name, YearCreated, Creator FROM prlanguages WHERE Id = @Id";
         var language = await connection.QueryFirstOrDefaultAsync<PrLanguage>(query, new { Id = id });
+        return language;
+    }
+    public async Task<PrLanguage> GetByIdAndLocale(int id, string locale)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        SELECT 
+            prlanguages.Id, 
+            prlanguages.Name, 
+            prlanguages.YearCreated, 
+            prlanguages.Creator, 
+            COALESCE(prlanguagedescriptions.Description, '') AS Description
+        FROM prlanguages
+        LEFT JOIN prlanguagedescriptions ON prlanguages.Id = prlanguagedescriptions.LanguageId
+        AND prlanguagedescriptions.Locale = @Locale
+        WHERE prlanguages.Id = @Id
+    ";
+
+        var language = await connection.QueryFirstOrDefaultAsync<PrLanguage>(query,
+            new { Id = id, Locale = locale });
         return language;
     }
 

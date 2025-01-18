@@ -25,11 +25,14 @@ namespace ProgrammingOData.API.Controllers
 
         [EnableQuery]
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] string? locale)
         {
             try
             {
-                AllPrLanguageQuery allLanguagesQuery = new AllPrLanguageQuery();
+                AllPrLanguageQuery allLanguagesQuery = new AllPrLanguageQuery
+                {
+                    Locale = locale
+                };
 
                 IQueryable<PrLanguage> languages = await _mediator.Send(allLanguagesQuery);
 
@@ -44,13 +47,14 @@ namespace ProgrammingOData.API.Controllers
         [EnableQuery]
         [HttpGet("by")]
 
-        public async Task<IActionResult> GetById([FromODataUri] int key)
+        public async Task<IActionResult> GetById([FromODataUri] int key, [FromQuery] string? locale)
         {
             try
             {
                 ByIdPrLanguageQuery prLanguageQuery = new ByIdPrLanguageQuery
                 {
-                    Id = key
+                    Id = key,
+                    Locale = locale
                 };
 
                 SingleResult<PrLanguage> language = await _mediator.Send(prLanguageQuery);

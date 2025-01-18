@@ -63,5 +63,7 @@
     <None Include="MariaDb\Prlanguages.txt" />
     <None Include="MariaDb\Data\PrlanguagesData.txt" />
     <None Include="MariaDb\Users.txt" />
+    <None Include="MariaDb\SupportedLocales.txt" />
+    <None Include="MariaDb\Data\SupportedLocalesData.txt" />
   </ItemGroup>
 </Project>

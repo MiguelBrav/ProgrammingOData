@@ -9,15 +9,28 @@ public class DeletePrLanguageCommandHandler : IRequestHandler<DeletePrLanguageCo
 {
     private readonly IPRLanguageRepository _prLanguageRepository;
 
-    public DeletePrLanguageCommandHandler(IPRLanguageRepository prLanguageRepository)
+    private readonly IPRLanguageDescriptionRepository _prLanguageDescriptionRepository;
+
+    public DeletePrLanguageCommandHandler(IPRLanguageRepository prLanguageRepository, IPRLanguageDescriptionRepository prLanguageDescriptionRepository)
     {
         _prLanguageRepository = prLanguageRepository;
+        _prLanguageDescriptionRepository = prLanguageDescriptionRepository;
     }
 
     public async Task<IActionResult> Handle(DeletePrLanguageCommand request, CancellationToken cancellationToken)
     {
         try
         {
+            int totalDescriptions = await _prLanguageDescriptionRepository.CountByLanguage(request.deleteLanguage.Id);
+
+            if (totalDescriptions > 0)
+            {
+                return new BadRequestObjectResult(new
+                {
+                    Message = "The language has associated descriptions. Delete them first.",
+                });
+            }
+
             await _prLanguageRepository.Delete(request.deleteLanguage.Id);
 
             return new OkObjectResult(new

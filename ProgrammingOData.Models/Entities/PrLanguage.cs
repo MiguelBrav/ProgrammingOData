@@ -10,6 +10,8 @@ public class PrLanguage
 
     public string Creator { get; set; } = string.Empty;
 
+    public string Description { get; set; } = string.Empty;
+
     public PrLanguage() { }
 
     public PrLanguage(string name, int yearCreated, string creator)
