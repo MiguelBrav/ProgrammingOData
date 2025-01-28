@@ -68,7 +68,7 @@ namespace ProgrammingOData.API.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(BasicAuthFilter))]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
         public async Task<IActionResult> CreateLanguage(CreatePrLanguageDTO createLanguage)
         {
             try
@@ -87,7 +87,7 @@ namespace ProgrammingOData.API.Controllers
         }
 
         [HttpPut]
-        [ServiceFilter(typeof(BasicAuthFilter))]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
         public async Task<IActionResult> UpdateLanguage(UpdatePrLanguageDTO updateLanguage)
         {
             try
@@ -106,7 +106,7 @@ namespace ProgrammingOData.API.Controllers
         }
 
         [HttpDelete]
-        [ServiceFilter(typeof(BasicAuthFilter))]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
         public async Task<IActionResult> DeleteLanguage([FromODataUri] int key)
         {
             try

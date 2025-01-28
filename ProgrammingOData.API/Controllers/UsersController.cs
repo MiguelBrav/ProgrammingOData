@@ -23,7 +23,7 @@ namespace ProgrammingOData.API.Controllers
 
         [EnableQuery]
         [HttpGet]
-        [ServiceFilter(typeof(BasicAuthFilter))]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
         public async Task<IActionResult> Get()
         {
             try
@@ -77,7 +77,7 @@ namespace ProgrammingOData.API.Controllers
         }
 
         [HttpPut("role")]
-        [ServiceFilter(typeof(BasicAuthFilter))]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
         public async Task<IActionResult> UpdateUserRole(UserRoleDTO userRoleDTO)
         {
             try

@@ -7,13 +7,13 @@ using ProgrammingOData.Models.Models;
 
 namespace ProgrammingOData.API.Helpers;
 
-public class BasicAuthFilter : Attribute, IAsyncAuthorizationFilter
+public class BasicEditorAuthFilter : Attribute, IAsyncAuthorizationFilter
 {
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration _configuration;
     private readonly string _hashKey;
 
-    public BasicAuthFilter(IUserRepository userRepository, IConfiguration configuration)
+    public BasicEditorAuthFilter(IUserRepository userRepository, IConfiguration configuration)
     {
         _userRepository = userRepository;
         _configuration = configuration;
@@ -79,11 +79,11 @@ public class BasicAuthFilter : Attribute, IAsyncAuthorizationFilter
             return;
         }
 
-        if (existsUser.UserRole != nameof(UserRole.Admin))
+        if (existsUser.UserRole != nameof(UserRole.Admin) && existsUser.UserRole != nameof(UserRole.Editor))
         {
             context.Result = new UnauthorizedObjectResult(new
             {
-                Message = "User is not allowed to manage data"
+                Message = "User is not allowed to edit translations"
             });
             return;
         }

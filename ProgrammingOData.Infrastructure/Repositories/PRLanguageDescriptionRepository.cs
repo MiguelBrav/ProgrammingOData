@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using ProgrammingOData.Domain.Interfaces;
+using ProgrammingOData.Models.Entities;
 
 
 namespace ProgrammingOData.Infrastructure.Repositories;
@@ -23,5 +24,14 @@ public class PRLanguageDescriptionRepository : IPRLanguageDescriptionRepository
         var query = "SELECT COUNT(*) FROM prlanguagedescriptions WHERE LanguageId = @LanguageId";
         var count = await connection.ExecuteScalarAsync<int>(query, new { LanguageId = languageId });
         return count;
+    }
+
+    public async Task<List<PrLanguageDescription>> GetAll()
+    {
+        // To - Do - replace query for store procedure
+        using var connection = new MySqlConnection(_connectionString);
+        var query = "SELECT Id, LanguageId, Locale, Description FROM prlanguagedescriptions";
+        var languagesDescriptions = await connection.QueryAsync<PrLanguageDescription>(query);
+        return languagesDescriptions.ToList();
     }
 }

@@ -24,7 +24,9 @@ builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
 builder.Services.AddScoped<ISupportedLocaleRepository, SupportedLocaleRepository>();
 builder.Services.AddScoped<IPRLanguageDescriptionRepository, PRLanguageDescriptionRepository>();
 
-builder.Services.AddScoped<BasicAuthFilter>();
+builder.Services.AddScoped<BasicAdminAuthFilter>();
+builder.Services.AddScoped<BasicEditorAuthFilter>();
+
 builder.Services.AddControllers().AddOData(opt =>
 {
     opt.Select().Filter().OrderBy().SetMaxTop(100).SkipToken();
