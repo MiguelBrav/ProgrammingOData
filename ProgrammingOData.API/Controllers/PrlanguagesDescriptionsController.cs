@@ -42,5 +42,27 @@ namespace ProgrammingOData.API.Controllers
             }
         }
 
+        [EnableQuery]
+        [HttpGet("by")]
+
+        public async Task<IActionResult> GetById([FromODataUri] int key)
+        {
+            try
+            {
+                ByIdPrLanguageDescriptionQuery prLanguageDescQuery = new ByIdPrLanguageDescriptionQuery
+                {
+                    Id = key
+                };
+
+                SingleResult<PrLanguageDescription> language = await _mediator.Send(prLanguageDescQuery);
+
+                return Ok(language);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
     }
 }

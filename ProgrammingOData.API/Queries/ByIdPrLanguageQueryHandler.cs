@@ -28,8 +28,12 @@ public class ByIdPrLanguageQueryHandler : IRequestHandler<ByIdPrLanguageQuery, S
             request.Locale = _defaultLocale;
         }
 
-        PrLanguage language = await _prLanguageRepository.GetByIdAndLocale(request.Id,request.Locale);
+        PrLanguage language = await _prLanguageRepository.GetByIdAndLocale(request.Id, request.Locale);
 
-        return SingleResult.Create(new List<PrLanguage> { language }.AsQueryable());
+        IQueryable<PrLanguage> result = language is not null
+             ? new List<PrLanguage> { language }.AsQueryable()
+             : Enumerable.Empty<PrLanguage>().AsQueryable();
+
+        return SingleResult.Create(result);
     }
 }

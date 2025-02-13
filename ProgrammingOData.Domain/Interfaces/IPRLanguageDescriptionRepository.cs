@@ -6,4 +6,5 @@ public interface IPRLanguageDescriptionRepository
 {
     Task<int> CountByLanguage(int languageId);
     Task<List<PrLanguageDescription>> GetAll();
+    Task<PrLanguageDescription> GetById(int id);
 }
