@@ -42,6 +42,7 @@ namespace ProgrammingOData.API.Controllers
             }
         }
 
+        [ServiceFilter(typeof(BasicEditorAuthFilter))]
         [EnableQuery]
         [HttpGet("by")]
 
@@ -57,6 +58,25 @@ namespace ProgrammingOData.API.Controllers
                 SingleResult<PrLanguageDescription> language = await _mediator.Send(prLanguageDescQuery);
 
                 return Ok(language);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [ServiceFilter(typeof(BasicEditorAuthFilter))]
+        [HttpPost]
+        public async Task<IActionResult> CreateLanguageDescription(CreatePrLanguageDescDTO createLanguageDescription)
+        {
+            try
+            {
+                CreatePrLanguageDescCommand createPrLanguageDescCommand = new CreatePrLanguageDescCommand
+                {
+                    createLanguageDesc = createLanguageDescription
+                };
+
+                return await _mediator.Send(createPrLanguageDescCommand);
             }
             catch (Exception ex)
             {
