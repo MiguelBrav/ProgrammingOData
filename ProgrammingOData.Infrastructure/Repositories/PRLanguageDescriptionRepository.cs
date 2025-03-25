@@ -25,6 +25,13 @@ public class PRLanguageDescriptionRepository : IPRLanguageDescriptionRepository
         var count = await connection.ExecuteScalarAsync<int>(query, new { LanguageId = languageId });
         return count;
     }
+    public async Task<int> CountByLanguageLocale(int languageId, string locale)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = "SELECT COUNT(*) FROM prlanguagedescriptions WHERE LanguageId = @LanguageId And Locale = @Locale";
+        var count = await connection.ExecuteScalarAsync<int>(query, new { LanguageId = languageId, Locale = locale });
+        return count;
+    }
 
     public async Task<List<PrLanguageDescription>> GetAll()
     {
@@ -43,4 +50,25 @@ public class PRLanguageDescriptionRepository : IPRLanguageDescriptionRepository
         var language = await connection.QueryFirstOrDefaultAsync<PrLanguageDescription>(query, new { Id = id });
         return language;
     }
+
+    public async Task<int> Create(PrLanguageDescription languageDescription)
+    {
+        // To - Do - replace query for store procedure
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        INSERT INTO prlanguagedescriptions (LanguageId, Locale, Description)
+        VALUES (@LanguageId, @Locale, @Description);
+        SELECT LAST_INSERT_ID();
+        ";
+
+        languageDescription.Id = await connection.ExecuteScalarAsync<int>(query, new
+        {
+            LanguageId = languageDescription.LanguageId,
+            Locale = languageDescription.Locale,
+            Description = languageDescription.Description
+        });
+
+        return languageDescription.Id;
+    }
+
 }

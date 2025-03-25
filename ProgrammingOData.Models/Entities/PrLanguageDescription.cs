@@ -8,5 +8,12 @@ public class PrLanguageDescription
 
     public string Locale { get; set; } = string.Empty;
 
-    public string Description {  get; set; } = string.Empty;    
+    public string Description {  get; set; } = string.Empty;
+
+    public PrLanguageDescription(int languageId, string locale, string description)
+    {
+        LanguageId = languageId;
+        Locale = locale;
+        Description = description;
+    }
 }
