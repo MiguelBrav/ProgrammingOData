@@ -70,5 +70,23 @@ public class PRLanguageDescriptionRepository : IPRLanguageDescriptionRepository
 
         return languageDescription.Id;
     }
+    public async Task Update(PrLanguageDescription languageDescription)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        UPDATE prlanguagedescriptions
+        SET LanguageId = @LanguageId, Locale = @Locale, Description = @Description
+        WHERE Id = @Id;
+        ";
+
+        await connection.ExecuteAsync(query, new
+        {
+            Id = languageDescription.Id,
+            LanguageId = languageDescription.LanguageId,
+            Locale = languageDescription.Locale,
+            Description = languageDescription.Description
+        });
+
+    }
 
 }

@@ -84,5 +84,24 @@ namespace ProgrammingOData.API.Controllers
             }
         }
 
+        [HttpPut]
+        [ServiceFilter(typeof(BasicEditorAuthFilter))]
+        public async Task<IActionResult> UpdateLanguageDesc(UpdatePrLanguageDescDTO updateLanguageDesc)
+        {
+            try
+            {
+                UpdatePrLanguageDescCommand updatePrLanguageDescCommand = new UpdatePrLanguageDescCommand
+                {
+                    updateLanguageDesc = updateLanguageDesc
+                };
+
+                return await _mediator.Send(updatePrLanguageDescCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
     }
 }

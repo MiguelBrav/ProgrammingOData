@@ -9,5 +9,6 @@ public interface IPRLanguageDescriptionRepository
     Task<List<PrLanguageDescription>> GetAll();
     Task<PrLanguageDescription> GetById(int id);
     Task<int> Create(PrLanguageDescription languageDescription);
+    Task Update(PrLanguageDescription languageDescription);
 
 }
