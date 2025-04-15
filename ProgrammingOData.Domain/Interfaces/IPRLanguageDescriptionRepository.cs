@@ -10,5 +10,5 @@ public interface IPRLanguageDescriptionRepository
     Task<PrLanguageDescription> GetById(int id);
     Task<int> Create(PrLanguageDescription languageDescription);
     Task Update(PrLanguageDescription languageDescription);
-
+    Task Delete(int id);
 }

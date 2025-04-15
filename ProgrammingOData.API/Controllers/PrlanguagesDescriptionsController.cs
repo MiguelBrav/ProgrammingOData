@@ -101,7 +101,25 @@ namespace ProgrammingOData.API.Controllers
             {
                 return BadRequest("An error occurred " + ex);
             }
-        }
+        }    
 
+        [HttpDelete]
+        [ServiceFilter(typeof(BasicEditorAuthFilter))]
+        public async Task<IActionResult> DeleteLanguageDescription([FromODataUri] int key)
+        {
+            try
+            {
+                DeletePrLanguageDescCommand deletePrLanguageDescCommand = new DeletePrLanguageDescCommand
+                {
+                    deleteLanguage = new DeleteByIdDTO { Id = key }
+                };
+
+                return await _mediator.Send(deletePrLanguageDescCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
     }
 }
