@@ -4,6 +4,7 @@ using System.Text;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.API.Helpers.Enums;
 using ProgrammingOData.Models.Models;
+using System.Security.Claims;
 
 namespace ProgrammingOData.API.Helpers;
 
@@ -88,5 +89,15 @@ public class BasicAdminAuthFilter : Attribute, IAsyncAuthorizationFilter
             return;
         }
 
+        var claims = new List<Claim>
+        {
+            new Claim("UserId", existsUser.UserId.ToString()),
+            new Claim(ClaimTypes.Email, existsUser.Email),
+            new Claim(ClaimTypes.Role, existsUser.UserRole)
+        };
+
+        var identity = new ClaimsIdentity(claims, "CustomBasic");
+        var principal = new ClaimsPrincipal(identity);
+        context.HttpContext.User = principal;
     }
 }

@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ProgrammingOData.API.Commands;
 using ProgrammingOData.API.Helpers;
@@ -31,6 +32,25 @@ namespace ProgrammingOData.API.Controllers
                 AllUsersQuery allUsersQuery = new AllUsersQuery();
 
                 IQueryable<UserRoleDashboard> users = await _mediator.Send(allUsersQuery);
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [EnableQuery]
+        [HttpGet("current-information")]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
+        public async Task<IActionResult> GetInformation()
+        {
+            try
+            {
+                UserInformationQuery userInformationQuery = new UserInformationQuery();
+
+                SingleResult<UserInformation> users = await _mediator.Send(userInformationQuery);
 
                 return Ok(users);
             }

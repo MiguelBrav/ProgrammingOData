@@ -60,4 +60,17 @@ public class UserRepository : IUserRepository
         var users = await connection.QueryAsync<UserRoleDashboard>(query);
         return users.ToList();
     }
+
+    public async Task<UserInformation> GetInformacion(string email)
+    {
+        // To - Do - replace query for store procedure
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"SELECT u.UserId, u.Email, u.UserName, u.DateOfBirth, ur.UserRole
+                    FROM users u
+                    INNER JOIN usersrole ur ON u.UserId = ur.UserId
+                    WHERE u.Email = @Email";
+        var user = await connection.QueryFirstOrDefaultAsync<UserInformation>(query, new { Email = email });
+        return user;
+    }
+
 }
