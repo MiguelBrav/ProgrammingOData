@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.OData;
+using Microsoft.OpenApi.Models;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Infrastructure.Repositories;
@@ -26,6 +27,7 @@ builder.Services.AddScoped<IPRLanguageDescriptionRepository, PRLanguageDescripti
 
 builder.Services.AddScoped<BasicAdminAuthFilter>();
 builder.Services.AddScoped<BasicEditorAuthFilter>();
+builder.Services.AddScoped<BasicDefaultAuthFilter>();
 
 builder.Services.AddControllers().AddOData(opt =>
 {
@@ -33,7 +35,33 @@ builder.Services.AddControllers().AddOData(opt =>
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProgrammingOData.API", Version = "v1" });
+
+    c.AddSecurityDefinition("Basic", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Basic",
+        In = ParameterLocation.Header,
+        Description = "Authorization: Basic <base64>"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Basic"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddHttpContextAccessor();
 

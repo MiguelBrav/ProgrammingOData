@@ -43,7 +43,7 @@ namespace ProgrammingOData.API.Controllers
 
         [EnableQuery]
         [HttpGet("current-information")]
-        [ServiceFilter(typeof(BasicAdminAuthFilter))]
+        [ServiceFilter(typeof(BasicDefaultAuthFilter))]
         public async Task<IActionResult> GetInformation()
         {
             try
