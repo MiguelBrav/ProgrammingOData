@@ -65,6 +65,10 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddHealthChecks().AddCheck("mysql-dapper", 
+    new MySqlDapperHealthCheck(builder.Configuration.GetConnectionString("MySql")));
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -80,5 +84,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/healthz", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = HealthCheckResponse.WriteResponse
+});
 
 app.Run();
