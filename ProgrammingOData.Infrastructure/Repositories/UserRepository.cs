@@ -73,4 +73,84 @@ public class UserRepository : IUserRepository
         return user;
     }
 
+    public async Task<string> ChangePsw(string userId)
+    {
+        // To - Do - replace query for store procedure
+        using var connection = new MySqlConnection(_connectionString);
+        string? token = Guid.NewGuid().ToString();
+        DateTime expiration = DateTime.UtcNow.AddHours(1);
+        DateTime createdAt = DateTime.UtcNow;
+
+        var query = @"
+        INSERT INTO changepswprocess (UserId, Token, Expiration, CreatedAt, Used)
+        VALUES (@UserId, @Token, @Expiration, @CreatedAt, FALSE);";
+
+        await connection.ExecuteAsync(query, new
+        {
+            UserId = userId,
+            Token = token,
+            Expiration = expiration,
+            CreatedAt = createdAt
+        });
+
+        return token;
+    }
+
+    public async Task<string> GetValidResetUserId(string token)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+
+        var query = @"
+        SELECT CAST(UserId AS CHAR) 
+        FROM changepswprocess
+        WHERE Token = @Token 
+          AND Used = 0 
+          AND Expiration >= NOW();";
+
+        string userId = await connection.QueryFirstOrDefaultAsync<string>(query, new { Token = token });
+
+        return userId ?? string.Empty; 
+    }
+
+
+    public async Task<string> ConfirmPsw(string userId, string token, string newPassword)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        await connection.OpenAsync();
+
+        using var transaction = connection.BeginTransaction();
+
+        try
+        {
+            var updateUserQuery = @"
+            UPDATE users
+            SET Password = @Password,
+                UpdatedAt = NOW()
+            WHERE UserId = @UserId;";
+
+            await connection.ExecuteAsync(updateUserQuery, new
+            {
+                Password = newPassword,
+                UserId = userId
+            }, transaction);
+
+            var updateTokenQuery = @"
+            UPDATE changepswprocess
+            SET Used = TRUE,
+                UsedDate = NOW()
+            WHERE Token = @Token;";
+
+            await connection.ExecuteAsync(updateTokenQuery, new { Token = token }, transaction);
+
+            transaction.Commit();
+
+            return userId;
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
+    }
+
 }

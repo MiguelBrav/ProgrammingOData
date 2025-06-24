@@ -114,5 +114,47 @@ namespace ProgrammingOData.API.Controllers
                 return BadRequest("An error occurred " + ex);
             }
         }
+
+        [HttpPost("change-password")]
+        [ServiceFilter(typeof(BasicDefaultAuthFilter))]
+        public async Task<IActionResult> ChangePsw(ChangePswDTO changePswDTO)
+        {
+            try
+            {
+                ChangePswUserCommand changePswUserCommand = new ChangePswUserCommand
+                {
+                    currentPsw = changePswDTO
+                };
+
+                return await _mediator.Send(changePswUserCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [HttpPost("confirm-password/{resetToken}")]
+        [ServiceFilter(typeof(BasicDefaultAuthFilter))]
+        public async Task<IActionResult> ChangePsw([FromRoute] string resetToken, [FromBody] string newPassword)
+        {
+            try
+            {
+                ConfirmPswUserCommand confirmPswUserCommand = new ConfirmPswUserCommand
+                {
+                    confirmPsw = new ConfirmPswDTO
+                    {
+                        ConfirmPsw = newPassword,
+                        Token = resetToken
+                    }
+                };
+                
+                return await _mediator.Send(confirmPswUserCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
     }
 }

@@ -10,5 +10,8 @@ public interface IUserRepository
     Task<UserWithRol> ValidateUserAndRole(string email);
     Task<List<UserRoleDashboard>> GetAll();
     Task<UserInformation> GetInformacion(string email);
+    Task<string> ChangePsw(string userId);
+    Task<string> GetValidResetUserId(string token);
+    Task<string> ConfirmPsw(string userId, string token, string newPassword);
 
 }
