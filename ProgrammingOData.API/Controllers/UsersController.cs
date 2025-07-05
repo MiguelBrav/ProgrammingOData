@@ -41,6 +41,26 @@ namespace ProgrammingOData.API.Controllers
             }
         }
 
+
+        [EnableQuery]
+        [HttpGet("id/{userId}")]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
+        public async Task<IActionResult> GetById(string userId)
+        {
+            try
+            {
+                ByIdUserQuery userQuery = new ByIdUserQuery();
+
+                SingleResult<UserRoleDashboard> user = await _mediator.Send(userQuery);
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
         [EnableQuery]
         [HttpGet("current-information")]
         [ServiceFilter(typeof(BasicDefaultAuthFilter))]

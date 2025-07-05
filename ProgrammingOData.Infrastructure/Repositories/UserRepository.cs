@@ -61,6 +61,16 @@ public class UserRepository : IUserRepository
         return users.ToList();
     }
 
+    public async Task<UserRoleDashboard> GetUserDashById(string userId)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"SELECT u.UserId, u.Email, u.UserName, u.DateOfBirth, ur.UserRole
+                    FROM users u
+                    INNER JOIN usersrole ur ON u.UserId = ur.UserId";
+        var users = await connection.QueryFirstOrDefaultAsync<UserRoleDashboard>(query);
+        return users;
+    }
+
     public async Task<UserInformation> GetInformacion(string email)
     {
         // To - Do - replace query for store procedure
