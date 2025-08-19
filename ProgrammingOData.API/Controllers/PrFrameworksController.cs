@@ -43,5 +43,24 @@ namespace ProgrammingOData.API.Controllers
                 return BadRequest("An error occurred " + ex);
             }
         }
+
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
+        [HttpPost]
+        public async Task<IActionResult> CreateFramework(CreatePrFrameworkDTO createPrFrameworkDTO)
+        {
+            try
+            {
+                CreatePrFrameWorkCommand createPrFrameWorkCommand = new CreatePrFrameWorkCommand
+                {
+                    createFramework = createPrFrameworkDTO
+                };
+
+                return await _mediator.Send(createPrFrameWorkCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
     }
 }

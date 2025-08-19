@@ -50,4 +50,16 @@ public class PRFrameworkRepository : IPRFrameworkRepository
         var frameworks = await connection.QueryAsync<PrFramework>(query, new { Locale = locale });
         return frameworks.ToList();
     }
+
+    public async Task<int> Create(PrFramework framework)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        INSERT INTO prframeworks (Name, LanguageId, CreatedYear, Creator, Description)
+        VALUES (@Name, @LanguageId, @CreatedYear, @Creator, @Description);
+        SELECT LAST_INSERT_ID();"; 
+
+        var frameworkId = await connection.ExecuteScalarAsync<int>(query, framework);
+        return frameworkId;
+    }
 }
