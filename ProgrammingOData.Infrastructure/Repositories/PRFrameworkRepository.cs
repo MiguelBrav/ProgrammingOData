@@ -62,4 +62,36 @@ public class PRFrameworkRepository : IPRFrameworkRepository
         var frameworkId = await connection.ExecuteScalarAsync<int>(query, framework);
         return frameworkId;
     }
+
+    public async Task<PrFramework> GetById(int id)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        SELECT Id, Name, LanguageId, CreatedYear, Creator, Description
+        FROM prframeworks
+        WHERE Id = @Id;";
+
+        var framework = await connection.QuerySingleOrDefaultAsync<PrFramework>(query, new { Id = id });
+        return framework;
+    }
+
+    public async Task<PrFramework> GetByIdAndLocale(int id, string locale)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+        SELECT 
+            pf.Id, 
+            pf.Name, 
+            pf.LanguageId, 
+            pf.CreatedYear, 
+            pf.Creator, 
+            COALESCE(pfd.Description, '') AS Description
+        FROM prframeworks pf
+        LEFT JOIN prframeworkdescriptions pfd 
+            ON pf.Id = pfd.FrameworkId AND pfd.Locale = @Locale
+        WHERE pf.Id = @Id;";
+
+        var framework = await connection.QuerySingleOrDefaultAsync<PrFramework>(query, new { Id = id, Locale = locale });
+        return framework;
+    }
 }

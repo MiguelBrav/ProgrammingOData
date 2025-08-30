@@ -44,6 +44,30 @@ namespace ProgrammingOData.API.Controllers
             }
         }
 
+
+        [EnableQuery]
+        [HttpGet("by")]
+
+        public async Task<IActionResult> GetById([FromODataUri] int key, [FromQuery] string? locale)
+        {
+            try
+            {
+                ByIdPrFrameworkQuery prFrameworkQuery = new ByIdPrFrameworkQuery
+                {
+                    Id = key,
+                    Locale = locale
+                };
+
+                SingleResult<PrFramework> framework = await _mediator.Send(prFrameworkQuery);
+
+                return Ok(framework);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
         [ServiceFilter(typeof(BasicAdminAuthFilter))]
         [HttpPost]
         public async Task<IActionResult> CreateFramework(CreatePrFrameworkDTO createPrFrameworkDTO)
