@@ -86,5 +86,24 @@ namespace ProgrammingOData.API.Controllers
                 return BadRequest("An error occurred " + ex);
             }
         }
+
+        [HttpPut]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
+        public async Task<IActionResult> UpdateFramework(UpdatePrFrameworkDTO updatePrFrameworkDto)
+        {
+            try
+            {
+                UpdatePrFrameWorkCommand updatePrFrameWork = new UpdatePrFrameWorkCommand
+                {
+                    updatePrFramework = updatePrFrameworkDto
+                };
+
+                return await _mediator.Send(updatePrFrameWork);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
     }
 }

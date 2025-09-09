@@ -63,6 +63,21 @@ public class PRFrameworkRepository : IPRFrameworkRepository
         return frameworkId;
     }
 
+    public async Task Update(PrFramework framework)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+        var query = @"
+            UPDATE prframeworks
+            SET Name = @Name,
+                LanguageId = @LanguageId,
+                CreatedYear = @CreatedYear,
+                Creator = @Creator,
+                Description = @Description
+            WHERE Id = @Id;";
+
+        await connection.ExecuteAsync(query, framework);
+    }
+
     public async Task<PrFramework> GetById(int id)
     {
         using var connection = new MySqlConnection(_connectionString);
