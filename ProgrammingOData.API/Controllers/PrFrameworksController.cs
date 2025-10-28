@@ -105,5 +105,24 @@ namespace ProgrammingOData.API.Controllers
                 return BadRequest("An error occurred " + ex);
             }
         }
+
+        [HttpDelete]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
+        public async Task<IActionResult> DeleteFramework([FromODataUri] int key)
+        {
+            try
+            {
+                DeletePrFrameworkCommand deletePrFrameworkCommand = new DeletePrFrameworkCommand
+                {
+                    deleteLanguage = new DeleteByIdDTO { Id = key }
+                };
+
+                return await _mediator.Send(deletePrFrameworkCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
     }
 }

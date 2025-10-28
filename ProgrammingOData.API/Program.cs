@@ -25,6 +25,7 @@ builder.Services.AddScoped<IRoleUserRepository, RoleUserRepository>();
 builder.Services.AddScoped<ISupportedLocaleRepository, SupportedLocaleRepository>();
 builder.Services.AddScoped<IPRLanguageDescriptionRepository, PRLanguageDescriptionRepository>();
 builder.Services.AddScoped<IPRFrameworkRepository, PRFrameworkRepository>();
+builder.Services.AddScoped<IPRFrameworkDescriptionRepository, PRFrameworkDescriptionRepository>();
 
 builder.Services.AddScoped<BasicAdminAuthFilter>();
 builder.Services.AddScoped<BasicEditorAuthFilter>();

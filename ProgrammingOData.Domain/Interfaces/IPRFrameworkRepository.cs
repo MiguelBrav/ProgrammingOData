@@ -10,4 +10,5 @@ public interface IPRFrameworkRepository
     Task Update(PrFramework framework);
     Task<PrFramework> GetById(int id);
     Task<PrFramework> GetByIdAndLocale(int id, string locale);
+    Task Delete(int id);
 }
