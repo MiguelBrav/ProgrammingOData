@@ -4,6 +4,7 @@ namespace ProgrammingOData.Domain.Interfaces;
 
 public interface IPRFrameworkDescriptionRepository
 {
-    Task<int> CountByLanguage(int languageId);
-    Task<int> CountByLanguageLocale(int languageId, string locale);
+    Task<int> CountByLanguage(int frameworkId);
+    Task<int> CountByLanguageLocale(int frameworkId, string locale);
+    Task<int> Create(PrFrameworkDescription frameworkDescription);
 }
