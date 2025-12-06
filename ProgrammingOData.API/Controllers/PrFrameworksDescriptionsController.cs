@@ -42,6 +42,24 @@ namespace ProgrammingOData.API.Controllers
             }
         }
 
-      
+        [ServiceFilter(typeof(BasicEditorAuthFilter))]
+        [HttpPut]
+        public async Task<IActionResult> UpdateFrameworkDescription(UpdatePrFrameworkDescDTO updatePrFrameworkDesc)
+        {
+            try
+            {
+                UpdatePrFrameWorkDescCommand createPrFrameWorkDescCommand = new UpdatePrFrameWorkDescCommand
+                {
+                    UpdatePrFrameworkDesc = updatePrFrameworkDesc
+                };
+
+                return await _mediator.Send(createPrFrameWorkDescCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
     }
 }
