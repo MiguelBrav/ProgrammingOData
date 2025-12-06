@@ -49,4 +49,36 @@ public class PRFrameworkDescriptionRepository : IPRFrameworkDescriptionRepositor
         });
         return id;
     }
+
+    public async Task<PrFrameworkDescription> GetById(int id)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+
+        var sql = @"
+        SELECT Id, FrameworkId, Locale, Description
+        FROM prframeworkdescriptions
+        WHERE Id = @Id;
+        ";
+
+        var frameworkDesc = await connection.QueryFirstOrDefaultAsync<PrFrameworkDescription>(sql, new { Id = id });
+        return frameworkDesc;
+    }
+
+    public async Task Update(PrFrameworkDescription frameworkDescription)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+
+        var sql = @" UPDATE prframeworkdescriptions
+        SET FrameworkId = @FrameworkId, Locale = @Locale, Description = @Description
+        WHERE Id = @Id;";
+
+        await connection.ExecuteAsync(sql, new
+        {
+            frameworkDescription.Id,
+            frameworkDescription.FrameworkId,
+            frameworkDescription.Locale,
+            frameworkDescription.Description
+        });
+    }
+
 }
