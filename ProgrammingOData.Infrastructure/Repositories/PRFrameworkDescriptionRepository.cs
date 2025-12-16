@@ -63,6 +63,25 @@ public class PRFrameworkDescriptionRepository : IPRFrameworkDescriptionRepositor
         var frameworkDesc = await connection.QueryFirstOrDefaultAsync<PrFrameworkDescription>(sql, new { Id = id });
         return frameworkDesc;
     }
+    public async Task<PrFrameworkDescription> GetByIdAndLocale(int id, string locale)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+
+        var sql = @"
+        SELECT Id, FrameworkId, Locale, Description
+        FROM prframeworkdescriptions
+        WHERE Id = @Id
+          AND Locale = @Locale;
+    ";
+
+        var frameworkDesc = await connection.QueryFirstOrDefaultAsync<PrFrameworkDescription>(
+            sql,
+            new { Id = id, Locale = locale }
+        );
+
+        return frameworkDesc;
+    }
+
 
     public async Task Update(PrFrameworkDescription frameworkDescription)
     {

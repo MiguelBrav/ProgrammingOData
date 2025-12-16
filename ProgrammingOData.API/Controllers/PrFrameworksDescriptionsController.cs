@@ -22,7 +22,29 @@ namespace ProgrammingOData.API.Controllers
         {
             _mediator = mediator;
         }
-       
+
+        [EnableQuery]
+        [HttpGet("by")]
+        public async Task<IActionResult> GetById([FromODataUri] int key, [FromQuery] string? locale)
+        {
+            try
+            {
+                ByIdPrFrameworkDescriptionQuery prFrameworDesckQuery = new ByIdPrFrameworkDescriptionQuery
+                {
+                    Id = key,
+                    Locale = locale
+                };
+
+                SingleResult<PrFrameworkDescription> frameworkDesc = await _mediator.Send(prFrameworDesckQuery);
+
+                return Ok(frameworkDesc);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
         [ServiceFilter(typeof(BasicEditorAuthFilter))]
         [HttpPost]
         public async Task<IActionResult> CreateFrameworkDescription(CreatePrFrameworkDescDTO createFrameworkDescription)

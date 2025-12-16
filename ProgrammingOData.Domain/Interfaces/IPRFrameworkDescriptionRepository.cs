@@ -7,6 +7,7 @@ public interface IPRFrameworkDescriptionRepository
     Task<int> CountByLanguage(int frameworkId);
     Task<int> CountByLanguageLocale(int frameworkId, string locale);
     Task<PrFrameworkDescription> GetById(int id);
+    Task<PrFrameworkDescription> GetByIdAndLocale(int id, string locale);
     Task<int> Create(PrFrameworkDescription frameworkDescription);
     Task Update(PrFrameworkDescription frameworkDescription);
 }
