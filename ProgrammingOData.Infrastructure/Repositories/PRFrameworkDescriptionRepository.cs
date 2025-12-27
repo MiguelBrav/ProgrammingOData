@@ -82,6 +82,18 @@ public class PRFrameworkDescriptionRepository : IPRFrameworkDescriptionRepositor
         return frameworkDesc;
     }
 
+    public async Task<List<PrFrameworkDescription>> GetAll()
+    {
+        using var connection = new MySqlConnection(_connectionString);
+
+        var sql = @"
+        SELECT Id, FrameworkId, Locale, Description
+        FROM prframeworkdescriptions
+        ";
+
+        var frameworkDescs = await connection.QueryAsync<PrFrameworkDescription>(sql);
+        return frameworkDescs.ToList();
+    }
 
     public async Task Update(PrFrameworkDescription frameworkDescription)
     {

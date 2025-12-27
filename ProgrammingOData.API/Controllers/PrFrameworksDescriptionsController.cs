@@ -23,6 +23,25 @@ namespace ProgrammingOData.API.Controllers
             _mediator = mediator;
         }
 
+        [ServiceFilter(typeof(BasicEditorAuthFilter))]
+        [EnableQuery]
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                AllPrFrameworkDescQuery allPrFrameworkDescQuery = new AllPrFrameworkDescQuery();
+
+                IQueryable<PrFrameworkDescription> frameworkdsDesc = await _mediator.Send(allPrFrameworkDescQuery);
+
+                return Ok(frameworkdsDesc);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
         [EnableQuery]
         [HttpGet("by")]
         public async Task<IActionResult> GetById([FromODataUri] int key, [FromQuery] string? locale)
