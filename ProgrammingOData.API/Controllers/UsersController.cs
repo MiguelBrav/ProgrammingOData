@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 using ProgrammingOData.API.Commands;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.API.Queries;
+using ProgrammingOData.API.Queries.Admin;
 using ProgrammingOData.Models.DTOS;
 using ProgrammingOData.Models.Models;
 
@@ -170,6 +171,24 @@ namespace ProgrammingOData.API.Controllers
                 };
                 
                 return await _mediator.Send(confirmPswUserCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [HttpGet("admin/global-stats")]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
+        public async Task<IActionResult> GlobalStats()
+        {
+            try
+            {
+                GlobalStatsQuery globalQuery = new GlobalStatsQuery();
+
+                var result = await _mediator.Send(globalQuery);
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
