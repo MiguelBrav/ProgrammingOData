@@ -1,13 +1,13 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
 using System.Text;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, IActionResult>
+public class LoginUserCommandHandler : UseCaseBase<LoginUserCommand, IActionResult>
 {
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration _configuration;
@@ -21,7 +21,7 @@ public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, IAction
 
     }
 
-    public async Task<IActionResult> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(LoginUserCommand request)
     {
         User existsUser = await _userRepository.GetByEmail(request.loginUser.Email);
 

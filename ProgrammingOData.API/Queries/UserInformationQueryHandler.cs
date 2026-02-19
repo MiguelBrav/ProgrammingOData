@@ -1,14 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.OData.Results;
+﻿using Microsoft.AspNetCore.OData.Results;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Infrastructure.Repositories;
-using ProgrammingOData.Models.Entities;
 using ProgrammingOData.Models.Models;
 using System.Security.Claims;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class UserInformationQueryHandler : IRequestHandler<UserInformationQuery, SingleResult<UserInformation>>
+public class UserInformationQueryHandler : UseCaseBase<UserInformationQuery, SingleResult<UserInformation>>
 {
     private readonly IUserRepository _userRepository;
 
@@ -20,7 +18,7 @@ public class UserInformationQueryHandler : IRequestHandler<UserInformationQuery,
         _httpContextAccessor=httpContextAccessor;
     }
 
-    public async Task<SingleResult<UserInformation>> Handle(UserInformationQuery request, CancellationToken cancellationToken)
+    public override async Task<SingleResult<UserInformation>> Execute(UserInformationQuery request)
     {
         var email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
 

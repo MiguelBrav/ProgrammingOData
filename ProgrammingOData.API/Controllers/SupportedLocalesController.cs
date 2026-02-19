@@ -1,9 +1,9 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using ProgrammingOData.API.Aggregator.Interfaces;
 using ProgrammingOData.API.Commands;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.API.Queries;
@@ -16,11 +16,11 @@ namespace ProgrammingOData.API.Controllers
     [Route("[controller]")]
     public class SupportedLocalesController : ODataController
     {
-        private IMediator _mediator;
+        private readonly ISupportedLocalesAggregator _aggregator;
 
-        public SupportedLocalesController(IMediator mediator)
+        public SupportedLocalesController(ISupportedLocalesAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         [EnableQuery]
@@ -31,8 +31,7 @@ namespace ProgrammingOData.API.Controllers
             {
                 AllSupportedLocalesQuery allLocalesQuery = new AllSupportedLocalesQuery();
 
-                IQueryable<SupportedLocale> locales = await _mediator.Send(allLocalesQuery);
-
+                IQueryable<SupportedLocale> locales = await _aggregator.AllSupportedLocalesQuery(allLocalesQuery);
                 return Ok(locales);
             }
             catch (Exception ex)
@@ -52,8 +51,7 @@ namespace ProgrammingOData.API.Controllers
                     Id = key
                 };
 
-                SingleResult<SupportedLocale> language = await _mediator.Send(localeQuery);
-
+                SingleResult<SupportedLocale> language = await _aggregator.ByIdLocaleQuery(localeQuery);
                 return Ok(language);
             }
             catch (Exception ex)
@@ -73,7 +71,7 @@ namespace ProgrammingOData.API.Controllers
                     createLocale = createLocale
                 };
 
-                return await _mediator.Send(createLocaleCommand);
+                return await _aggregator.CreateLocale(createLocaleCommand);
             }
             catch (Exception ex)
             {
@@ -92,7 +90,7 @@ namespace ProgrammingOData.API.Controllers
                     updateLocale = updateLocale
                 };
 
-                return await _mediator.Send(updateLocaleCommand);
+                return await _aggregator.UpdateLocale(updateLocaleCommand);
             }
             catch (Exception ex)
             {
@@ -111,7 +109,7 @@ namespace ProgrammingOData.API.Controllers
                     deleteLocale = new DeleteByIdDTO { Id = key }
                 };
 
-                return await _mediator.Send(deleteLocaleCommand);
+                return await _aggregator.DeleteLocale(deleteLocaleCommand);
             }
             catch (Exception ex)
             {

@@ -1,13 +1,13 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
 using System.Security.Claims;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class ConfirmPswUserCommandHandler : IRequestHandler<ConfirmPswUserCommand, IActionResult>
+public class ConfirmPswUserCommandHandler : UseCaseBase<ConfirmPswUserCommand, IActionResult>
 {
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration _configuration;
@@ -25,7 +25,7 @@ public class ConfirmPswUserCommandHandler : IRequestHandler<ConfirmPswUserComman
 
     }
 
-    public async Task<IActionResult> Handle(ConfirmPswUserCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(ConfirmPswUserCommand request)
     {
         string email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
 

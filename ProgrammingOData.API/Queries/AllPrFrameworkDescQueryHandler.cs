@@ -1,10 +1,10 @@
-﻿using MediatR;
-using ProgrammingOData.Domain.Interfaces;
+﻿using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class AllPrFrameworkDescQueryHandler : IRequestHandler<AllPrFrameworkDescQuery, IQueryable<PrFrameworkDescription>>
+public class AllPrFrameworkDescQueryHandler : UseCaseBase<AllPrFrameworkDescQuery, IQueryable<PrFrameworkDescription>>
 {
     private readonly IPRFrameworkDescriptionRepository _pRFrameworkDescriptionRepository;
 
@@ -14,7 +14,7 @@ public class AllPrFrameworkDescQueryHandler : IRequestHandler<AllPrFrameworkDesc
         _pRFrameworkDescriptionRepository = pRFrameworkDescriptionRepository;
     }
 
-    public async Task<IQueryable<PrFrameworkDescription>> Handle(AllPrFrameworkDescQuery request, CancellationToken cancellationToken)
+    public override async Task<IQueryable<PrFrameworkDescription>> Execute(AllPrFrameworkDescQuery request)
     {
 
         List<PrFrameworkDescription> frameworksDesc = await _pRFrameworkDescriptionRepository.GetAll() ?? new List<PrFrameworkDescription>();

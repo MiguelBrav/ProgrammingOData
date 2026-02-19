@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class DeletePrLanguageDescCommandHandler : IRequestHandler<DeletePrLanguageDescCommand, IActionResult>
+public class DeletePrLanguageDescCommandHandler : UseCaseBase<DeletePrLanguageDescCommand, IActionResult>
 {
 
     private readonly IPRLanguageDescriptionRepository _prLanguageDescriptionRepository;
@@ -15,7 +14,7 @@ public class DeletePrLanguageDescCommandHandler : IRequestHandler<DeletePrLangua
         _prLanguageDescriptionRepository = prLanguageDescriptionRepository;
     }
 
-    public async Task<IActionResult> Handle(DeletePrLanguageDescCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(DeletePrLanguageDescCommand request)
     {
         try
         {

@@ -1,10 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using ProgrammingOData.Models.DTOS;
+﻿using ProgrammingOData.Models.DTOS;
 
 namespace ProgrammingOData.API.Commands; 
 
-public class DeleteLocaleCommand : IRequest<IActionResult>
+public class DeleteLocaleCommand 
 {
     public DeleteByIdDTO deleteLocale {  get; set; } = new DeleteByIdDTO();
 

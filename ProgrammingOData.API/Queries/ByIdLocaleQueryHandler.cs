@@ -1,12 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.OData.Results;
+﻿using Microsoft.AspNetCore.OData.Results;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
-using System.Configuration;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class ByIdLocaleQueryHandler : IRequestHandler<ByIdLocaleQuery, SingleResult<SupportedLocale>>
+public class ByIdLocaleQueryHandler : UseCaseBase<ByIdLocaleQuery, SingleResult<SupportedLocale>>
 {
     private readonly ISupportedLocaleRepository _supportedLocaleRepository;
 
@@ -15,7 +14,7 @@ public class ByIdLocaleQueryHandler : IRequestHandler<ByIdLocaleQuery, SingleRes
         _supportedLocaleRepository = supportedLocaleRepository;
     }
 
-    public async Task<SingleResult<SupportedLocale>> Handle(ByIdLocaleQuery request, CancellationToken cancellationToken)
+    public override async Task<SingleResult<SupportedLocale>> Execute(ByIdLocaleQuery request)
     {
 
         SupportedLocale locale = await _supportedLocaleRepository.GetById(request.Id);

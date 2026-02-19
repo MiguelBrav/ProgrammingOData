@@ -1,10 +1,10 @@
-﻿using MediatR;
-using ProgrammingOData.Domain.Interfaces;
+﻿using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class AllSupportedLocalesQueryHandler : IRequestHandler<AllSupportedLocalesQuery, IQueryable<SupportedLocale>>
+public class AllSupportedLocalesQueryHandler : UseCaseBase<AllSupportedLocalesQuery, IQueryable<SupportedLocale>>
 {
     private readonly ISupportedLocaleRepository _supportedLocaleRepository;
 
@@ -13,7 +13,7 @@ public class AllSupportedLocalesQueryHandler : IRequestHandler<AllSupportedLocal
         _supportedLocaleRepository = supportedLocaleRepository;
     }
 
-    public async Task<IQueryable<SupportedLocale>> Handle(AllSupportedLocalesQuery request, CancellationToken cancellationToken)
+    public override async Task<IQueryable<SupportedLocale>> Execute(AllSupportedLocalesQuery request)
     {
         List<SupportedLocale> locales = await _supportedLocaleRepository.GetAll() ?? new List<SupportedLocale>();
 

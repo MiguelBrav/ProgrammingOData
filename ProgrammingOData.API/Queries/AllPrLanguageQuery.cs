@@ -1,8 +1,5 @@
-﻿using MediatR;
-using ProgrammingOData.Models.Entities;
-
-namespace ProgrammingOData.API.Queries;
-public class AllPrLanguageQuery : IRequest<IQueryable<PrLanguage>>
+﻿namespace ProgrammingOData.API.Queries;
+public class AllPrLanguageQuery 
 {
     public string? Locale {  get; set; }
 }

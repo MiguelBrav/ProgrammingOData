@@ -1,13 +1,12 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using ProgrammingOData.API.Helpers;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.API.Helpers.Enums;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class UserRoleCommandHandler : IRequestHandler<UserRoleCommand, IActionResult>
+public class UserRoleCommandHandler : UseCaseBase<UserRoleCommand, IActionResult>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoleUserRepository _roleUserRepository;
@@ -23,7 +22,7 @@ public class UserRoleCommandHandler : IRequestHandler<UserRoleCommand, IActionRe
         _pswToAdmin = _configuration.GetValue<string>("PswToAdmin") ?? string.Empty;
     }
 
-    public async Task<IActionResult> Handle(UserRoleCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(UserRoleCommand request)
     {
         User existsUser = await _userRepository.GetByEmail(request.userWithRol.Email);
 

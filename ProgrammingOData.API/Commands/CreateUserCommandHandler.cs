@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using UseCaseCore.UseCases;
 using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.API.Helpers.Enums;
@@ -7,7 +7,7 @@ using ProgrammingOData.Models.Entities;
 
 namespace ProgrammingOData.API.Commands;
 
-public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, IActionResult>
+public class CreateUserCommandHandler : UseCaseBase<CreateUserCommand, IActionResult>
 {
     private readonly IUserRepository _userRepository;
     private readonly IRoleUserRepository _roleUserRepository;
@@ -24,7 +24,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, IActi
 
     }
 
-    public async Task<IActionResult> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(CreateUserCommand request)
     {
         User existsUser = await _userRepository.GetByEmail(request.createUser.Email);
 

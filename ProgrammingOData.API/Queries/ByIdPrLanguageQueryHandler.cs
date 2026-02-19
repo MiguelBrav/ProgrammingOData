@@ -1,12 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.OData.Results;
+﻿using Microsoft.AspNetCore.OData.Results;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
-using System.Configuration;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class ByIdPrLanguageQueryHandler : IRequestHandler<ByIdPrLanguageQuery, SingleResult<PrLanguage>>
+public class ByIdPrLanguageQueryHandler : UseCaseBase<ByIdPrLanguageQuery, SingleResult<PrLanguage>>
 {
     private readonly IPRLanguageRepository _prLanguageRepository;
 
@@ -21,7 +20,7 @@ public class ByIdPrLanguageQueryHandler : IRequestHandler<ByIdPrLanguageQuery, S
         _defaultLocale = _configuration.GetValue<string>("DefaultLocale") ?? string.Empty;
     }
 
-    public async Task<SingleResult<PrLanguage>> Handle(ByIdPrLanguageQuery request, CancellationToken cancellationToken)
+    public override async Task<SingleResult<PrLanguage>> Execute(ByIdPrLanguageQuery request)
     {
         if (string.IsNullOrEmpty(request.Locale))
         {

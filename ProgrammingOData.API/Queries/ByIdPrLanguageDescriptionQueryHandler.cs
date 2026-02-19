@@ -1,11 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.OData.Results;
+﻿using Microsoft.AspNetCore.OData.Results;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class ByIdPrLanguageDescriptionQueryHandler : IRequestHandler<ByIdPrLanguageDescriptionQuery, SingleResult<PrLanguageDescription>>
+public class ByIdPrLanguageDescriptionQueryHandler : UseCaseBase<ByIdPrLanguageDescriptionQuery, SingleResult<PrLanguageDescription>>
 {
     private readonly IPRLanguageDescriptionRepository _prLanguageDescriptionRepository;
 
@@ -14,7 +14,7 @@ public class ByIdPrLanguageDescriptionQueryHandler : IRequestHandler<ByIdPrLangu
         _prLanguageDescriptionRepository = prLanguageDescriptionRepository;
     }
 
-    public async Task<SingleResult<PrLanguageDescription>> Handle(ByIdPrLanguageDescriptionQuery request, CancellationToken cancellationToken)
+    public override async Task<SingleResult<PrLanguageDescription>> Execute(ByIdPrLanguageDescriptionQuery request)
     {
 
         PrLanguageDescription languageDescription = await _prLanguageDescriptionRepository.GetById(request.Id);

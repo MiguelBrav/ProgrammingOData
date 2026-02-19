@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
@@ -16,11 +15,11 @@ namespace ProgrammingOData.API.Controllers
     [Route("[controller]")]
     public class UsersController : ODataController
     {
-        private IMediator _mediator;
+        private readonly Aggregator.Interfaces.IUsersAggregator _aggregator;
 
-        public UsersController(IMediator mediator)
+        public UsersController(Aggregator.Interfaces.IUsersAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         [EnableQuery]
@@ -32,8 +31,7 @@ namespace ProgrammingOData.API.Controllers
             {
                 AllUsersQuery allUsersQuery = new AllUsersQuery();
 
-                IQueryable<UserRoleDashboard> users = await _mediator.Send(allUsersQuery);
-
+                IQueryable<UserRoleDashboard> users = await _aggregator.AllUsersQuery(allUsersQuery);
                 return Ok(users);
             }
             catch (Exception ex)
@@ -52,8 +50,7 @@ namespace ProgrammingOData.API.Controllers
             {
                 ByIdUserQuery userQuery = new ByIdUserQuery();
 
-                SingleResult<UserRoleDashboard> user = await _mediator.Send(userQuery);
-
+                SingleResult<UserRoleDashboard> user = await _aggregator.ByIdUserQuery(userQuery);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -71,8 +68,7 @@ namespace ProgrammingOData.API.Controllers
             {
                 UserInformationQuery userInformationQuery = new UserInformationQuery();
 
-                SingleResult<UserInformation> users = await _mediator.Send(userInformationQuery);
-
+                SingleResult<UserInformation> users = await _aggregator.UserInformationQuery(userInformationQuery);
                 return Ok(users);
             }
             catch (Exception ex)
@@ -91,7 +87,7 @@ namespace ProgrammingOData.API.Controllers
                     createUser = createUserDTO
                 };
 
-                return await _mediator.Send(userCommand);
+                return await _aggregator.CreateUser(userCommand);
             }
             catch (Exception ex)
             {
@@ -109,7 +105,7 @@ namespace ProgrammingOData.API.Controllers
                     loginUser = loginUserDTO
                 };
 
-                return await _mediator.Send(loginUserCommand);
+                return await _aggregator.LoginUser(loginUserCommand);
             }
             catch (Exception ex)
             {
@@ -128,7 +124,7 @@ namespace ProgrammingOData.API.Controllers
                     userWithRol = userRoleDTO
                 };
 
-                return await _mediator.Send(userToAdminCommand);
+                return await _aggregator.UpdateUserRole(userToAdminCommand);
             }
             catch (Exception ex)
             {
@@ -147,7 +143,7 @@ namespace ProgrammingOData.API.Controllers
                     currentPsw = changePswDTO
                 };
 
-                return await _mediator.Send(changePswUserCommand);
+                return await _aggregator.ChangePassword(changePswUserCommand);
             }
             catch (Exception ex)
             {
@@ -170,7 +166,7 @@ namespace ProgrammingOData.API.Controllers
                     }
                 };
                 
-                return await _mediator.Send(confirmPswUserCommand);
+                return await _aggregator.ConfirmPassword(confirmPswUserCommand);
             }
             catch (Exception ex)
             {
@@ -186,8 +182,7 @@ namespace ProgrammingOData.API.Controllers
             {
                 GlobalStatsQuery globalQuery = new GlobalStatsQuery();
 
-                var result = await _mediator.Send(globalQuery);
-
+                var result = await _aggregator.GlobalStats(globalQuery);
                 return Ok(result);
             }
             catch (Exception ex)

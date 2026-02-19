@@ -1,15 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Hosting;
-using ProgrammingOData.API.Helpers;
-using ProgrammingOData.API.Helpers.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Infrastructure.Repositories;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class UpdateLocaleCommandHandler : IRequestHandler<UpdateLocaleCommand, IActionResult>
+public class UpdateLocaleCommandHandler : UseCaseBase<UpdateLocaleCommand, IActionResult>
 {
     private readonly ISupportedLocaleRepository _supportedLocaleRepository;
 
@@ -18,7 +14,7 @@ public class UpdateLocaleCommandHandler : IRequestHandler<UpdateLocaleCommand, I
         _supportedLocaleRepository = supportedLocaleRepository;
     }
 
-    public async Task<IActionResult> Handle(UpdateLocaleCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(UpdateLocaleCommand request)
     {
         try
         {

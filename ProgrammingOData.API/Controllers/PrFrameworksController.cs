@@ -1,9 +1,9 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using ProgrammingOData.API.Aggregator.Interfaces;
 using ProgrammingOData.API.Commands;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.API.Queries;
@@ -16,11 +16,11 @@ namespace ProgrammingOData.API.Controllers
     [Route("[controller]")]
     public class PrFrameworksController : ODataController
     {
-        private IMediator _mediator;
+        private readonly IPrFrameworksAggregator _aggregator;
 
-        public PrFrameworksController(IMediator mediator)
+        public PrFrameworksController(IPrFrameworksAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         [EnableQuery]
@@ -34,8 +34,7 @@ namespace ProgrammingOData.API.Controllers
                     Locale = locale
                 };
 
-                IQueryable<PrFramework> frameworks = await _mediator.Send(allPrFrameworkQuery);
-
+                IQueryable<PrFramework> frameworks = await _aggregator.AllPrFrameworkQuery(allPrFrameworkQuery);
                 return Ok(frameworks);
             }
             catch (Exception ex)
@@ -58,8 +57,7 @@ namespace ProgrammingOData.API.Controllers
                     Locale = locale
                 };
 
-                SingleResult<PrFramework> framework = await _mediator.Send(prFrameworkQuery);
-
+                SingleResult<PrFramework> framework = await _aggregator.ByIdPrFrameworkQuery(prFrameworkQuery);
                 return Ok(framework);
             }
             catch (Exception ex)
@@ -79,7 +77,7 @@ namespace ProgrammingOData.API.Controllers
                     createFramework = createPrFrameworkDTO
                 };
 
-                return await _mediator.Send(createPrFrameWorkCommand);
+                return await _aggregator.CreatePrFramework(createPrFrameWorkCommand);
             }
             catch (Exception ex)
             {
@@ -98,7 +96,7 @@ namespace ProgrammingOData.API.Controllers
                     updatePrFramework = updatePrFrameworkDto
                 };
 
-                return await _mediator.Send(updatePrFrameWork);
+                return await _aggregator.UpdatePrFramework(updatePrFrameWork);
             }
             catch (Exception ex)
             {
@@ -117,7 +115,7 @@ namespace ProgrammingOData.API.Controllers
                     deleteLanguage = new DeleteByIdDTO { Id = key }
                 };
 
-                return await _mediator.Send(deletePrFrameworkCommand);
+                return await _aggregator.DeletePrFramework(deletePrFrameworkCommand);
             }
             catch (Exception ex)
             {

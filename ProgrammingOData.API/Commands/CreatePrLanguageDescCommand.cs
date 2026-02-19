@@ -1,10 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using ProgrammingOData.Models.DTOS;
+﻿using ProgrammingOData.Models.DTOS;
 
 namespace ProgrammingOData.API.Commands; 
 
-public class CreatePrLanguageDescCommand : IRequest<IActionResult>
+public class CreatePrLanguageDescCommand 
 {
     public CreatePrLanguageDescDTO createLanguageDesc {  get; set; } = new CreatePrLanguageDescDTO();
 

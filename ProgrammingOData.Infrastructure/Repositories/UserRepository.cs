@@ -23,8 +23,8 @@ public class UserRepository : IUserRepository
         using var connection = new MySqlConnection(_connectionString);
         // To - Do - replace query for store procedure
         var query = @"
-        INSERT INTO users (UserId, Email, EmailNormalized, UserName, DateOfBirth, Password)
-        VALUES (@UserId, @Email, @EmailNormalized, @UserName, @DateOfBirth, @Password);";
+        INSERT INTO users (UserId, Email, EmailNormalized, UserName, DateOfBirth, Password, CreatedAt)
+        VALUES (@UserId, @Email, @EmailNormalized, @UserName, @DateOfBirth, @Password, UTC_TIMESTAMP());";
 
         await connection.ExecuteAsync(query, user);
 
@@ -115,7 +115,7 @@ public class UserRepository : IUserRepository
         FROM changepswprocess
         WHERE Token = @Token 
           AND Used = 0 
-          AND Expiration >= NOW();";
+          AND Expiration >= UTC_TIMESTAMP();";
 
         string userId = await connection.QueryFirstOrDefaultAsync<string>(query, new { Token = token });
 
@@ -135,7 +135,7 @@ public class UserRepository : IUserRepository
             var updateUserQuery = @"
             UPDATE users
             SET Password = @Password,
-                UpdatedAt = NOW()
+                UpdatedAt = UTC_TIMESTAMP()
             WHERE UserId = @UserId;";
 
             await connection.ExecuteAsync(updateUserQuery, new
@@ -147,7 +147,7 @@ public class UserRepository : IUserRepository
             var updateTokenQuery = @"
             UPDATE changepswprocess
             SET Used = TRUE,
-                UsedDate = NOW()
+                UsedDate = UTC_TIMESTAMP()
             WHERE Token = @Token;";
 
             await connection.ExecuteAsync(updateTokenQuery, new { Token = token }, transaction);

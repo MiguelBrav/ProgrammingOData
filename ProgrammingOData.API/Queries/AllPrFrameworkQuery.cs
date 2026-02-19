@@ -1,8 +1,5 @@
-﻿using MediatR;
-using ProgrammingOData.Models.Entities;
-
-namespace ProgrammingOData.API.Queries;
-public class AllPrFrameworkQuery : IRequest<IQueryable<PrFramework>>
+﻿namespace ProgrammingOData.API.Queries;
+public class AllPrFrameworkQuery 
 {
     public string? Locale {  get; set; }
 }

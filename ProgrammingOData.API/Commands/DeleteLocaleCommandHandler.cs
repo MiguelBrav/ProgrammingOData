@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class DeleteLocaleCommandHandler : IRequestHandler<DeleteLocaleCommand, IActionResult>
+public class DeleteLocaleCommandHandler : UseCaseBase<DeleteLocaleCommand, IActionResult>
 {
     private readonly ISupportedLocaleRepository _supportedLocaleRepository;
 
@@ -14,7 +13,7 @@ public class DeleteLocaleCommandHandler : IRequestHandler<DeleteLocaleCommand, I
         _supportedLocaleRepository = supportedLocaleRepository;
     }
 
-    public async Task<IActionResult> Handle(DeleteLocaleCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(DeleteLocaleCommand request)
     {
         try
         {

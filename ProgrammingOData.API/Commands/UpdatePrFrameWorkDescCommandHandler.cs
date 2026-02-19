@@ -1,14 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using ProgrammingOData.API.Helpers;
-using ProgrammingOData.API.Helpers.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Infrastructure.Repositories;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class UpdatePrFrameWorkDescCommandHandler : IRequestHandler<UpdatePrFrameWorkDescCommand, IActionResult>
+public class UpdatePrFrameWorkDescCommandHandler : UseCaseBase<UpdatePrFrameWorkDescCommand, IActionResult>
 {
     private readonly IPRFrameworkRepository _pRFrameworkRepository;
     private readonly IPRFrameworkDescriptionRepository _pRFrameworkDescriptionRepository;
@@ -20,7 +17,7 @@ public class UpdatePrFrameWorkDescCommandHandler : IRequestHandler<UpdatePrFrame
         _pRFrameworkDescriptionRepository=pRFrameworkDescriptionRepository;
     }
 
-    public async Task<IActionResult> Handle(UpdatePrFrameWorkDescCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(UpdatePrFrameWorkDescCommand request)
     {
         try
         {
