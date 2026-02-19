@@ -1,9 +1,5 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.OData.Results;
-using ProgrammingOData.Models.Entities;
-
-namespace ProgrammingOData.API.Queries;
-public class ByIdLocaleQuery : IRequest<SingleResult<SupportedLocale>>
+﻿namespace ProgrammingOData.API.Queries;
+public class ByIdLocaleQuery
 {
     public int Id { get; set; }
 }

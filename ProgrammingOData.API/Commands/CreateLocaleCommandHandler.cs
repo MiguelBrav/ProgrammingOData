@@ -1,11 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class CreateLocaleCommandHandler : IRequestHandler<CreateLocaleCommand, IActionResult>
+public class CreateLocaleCommandHandler : UseCaseBase<CreateLocaleCommand, IActionResult>
 {
     private readonly ISupportedLocaleRepository _supportedLocaleRepository;
 
@@ -14,7 +14,7 @@ public class CreateLocaleCommandHandler : IRequestHandler<CreateLocaleCommand, I
         _supportedLocaleRepository = supportedLocaleRepository;
     }
 
-    public async Task<IActionResult> Handle(CreateLocaleCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(CreateLocaleCommand request)
     {
         try
         {

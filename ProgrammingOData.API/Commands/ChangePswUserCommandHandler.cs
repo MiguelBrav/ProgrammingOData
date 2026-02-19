@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using UseCaseCore.UseCases;
 using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.Domain.Interfaces;
@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace ProgrammingOData.API.Commands;
 
-public class ChangePswUserCommandHandler : IRequestHandler<ChangePswUserCommand, IActionResult>
+public class ChangePswUserCommandHandler : UseCaseBase<ChangePswUserCommand, IActionResult>
 {
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration _configuration;
@@ -25,7 +25,7 @@ public class ChangePswUserCommandHandler : IRequestHandler<ChangePswUserCommand,
 
     }
 
-    public async Task<IActionResult> Handle(ChangePswUserCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(ChangePswUserCommand request)
     {
         string email = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
 

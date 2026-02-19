@@ -1,10 +1,8 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using ProgrammingOData.Models.DTOS;
+﻿using ProgrammingOData.Models.DTOS;
 
 namespace ProgrammingOData.API.Commands; 
 
-public class UpdatePrFrameWorkCommand : IRequest<IActionResult>
+public class UpdatePrFrameWorkCommand 
 {
     public UpdatePrFrameworkDTO updatePrFramework {  get; set; } = new UpdatePrFrameworkDTO();
 

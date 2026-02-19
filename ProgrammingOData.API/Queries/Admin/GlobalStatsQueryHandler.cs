@@ -1,10 +1,10 @@
-﻿using MediatR;
-using ProgrammingOData.Domain.Interfaces;
+﻿using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Models;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries.Admin;
 
-public class GlobalStatsQueryHandler : IRequestHandler<GlobalStatsQuery, GlobalStatsResponse>
+public class GlobalStatsQueryHandler : UseCaseBase<GlobalStatsQuery, GlobalStatsResponse>
 {
     private readonly IStatsRepository _statsRepositoty;
 
@@ -14,7 +14,7 @@ public class GlobalStatsQueryHandler : IRequestHandler<GlobalStatsQuery, GlobalS
         _statsRepositoty = statsRepository;
     }
 
-    public async Task<GlobalStatsResponse> Handle(GlobalStatsQuery request, CancellationToken cancellationToken)
+    public override async Task<GlobalStatsResponse> Execute(GlobalStatsQuery request)
     {
 
         GlobalStatsResponse globalStats = await _statsRepositoty.GetGlobalStats() ?? new GlobalStatsResponse();

@@ -1,10 +1,11 @@
-﻿using MediatR;
-using ProgrammingOData.Domain.Interfaces;
+﻿using ProgrammingOData.Domain.Interfaces;
+using ProgrammingOData.Models.Entities;
 using ProgrammingOData.Models.Models;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class AllUsersQueryHandler : IRequestHandler<AllUsersQuery, IQueryable<UserRoleDashboard>>
+public class AllUsersQueryHandler : UseCaseBase<AllUsersQuery, IQueryable<UserRoleDashboard>>
 {
     private readonly IUserRepository _userRepository;
 
@@ -13,7 +14,7 @@ public class AllUsersQueryHandler : IRequestHandler<AllUsersQuery, IQueryable<Us
         _userRepository = userRepository;
     }
 
-    public async Task<IQueryable<UserRoleDashboard>> Handle(AllUsersQuery request, CancellationToken cancellationToken)
+    public override async Task<IQueryable<UserRoleDashboard>> Execute(AllUsersQuery request)
     {
         List<UserRoleDashboard> users = await _userRepository.GetAll() ?? new List<UserRoleDashboard>();
 

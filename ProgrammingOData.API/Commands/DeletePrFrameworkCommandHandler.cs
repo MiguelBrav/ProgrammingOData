@@ -1,11 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class DeletePrFrameworkCommandHandler : IRequestHandler<DeletePrFrameworkCommand, IActionResult>
+public class DeletePrFrameworkCommandHandler : UseCaseBase<DeletePrFrameworkCommand, IActionResult>
 {
     private readonly IPRFrameworkRepository _pRFrameworkRepository;
 
@@ -17,7 +16,7 @@ public class DeletePrFrameworkCommandHandler : IRequestHandler<DeletePrFramework
         _pRFrameworkDescriptionRepository = pRFrameworkDescriptionRepository;
     }
 
-    public async Task<IActionResult> Handle(DeletePrFrameworkCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(DeletePrFrameworkCommand request)
     {
         try
         {

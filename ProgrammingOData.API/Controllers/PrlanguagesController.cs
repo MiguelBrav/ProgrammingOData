@@ -1,9 +1,9 @@
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using ProgrammingOData.API.Aggregator.Interfaces;
 using ProgrammingOData.API.Commands;
 using ProgrammingOData.API.Helpers;
 using ProgrammingOData.API.Queries;
@@ -16,11 +16,11 @@ namespace ProgrammingOData.API.Controllers
     [Route("[controller]")]
     public class PrlanguagesController : ODataController
     {
-        private IMediator _mediator;
+        private readonly IPrlanguagesAggregator _aggregator;
 
-        public PrlanguagesController(IMediator mediator)
+        public PrlanguagesController(IPrlanguagesAggregator aggregator)
         {
-            _mediator = mediator;
+            _aggregator = aggregator;
         }
 
         [EnableQuery]
@@ -34,8 +34,7 @@ namespace ProgrammingOData.API.Controllers
                     Locale = locale
                 };
 
-                IQueryable<PrLanguage> languages = await _mediator.Send(allLanguagesQuery);
-
+                IQueryable<PrLanguage> languages = await _aggregator.AllPrLanguageQuery(allLanguagesQuery);
                 return Ok(languages);
             }
             catch (Exception ex)
@@ -57,8 +56,7 @@ namespace ProgrammingOData.API.Controllers
                     Locale = locale
                 };
 
-                SingleResult<PrLanguage> language = await _mediator.Send(prLanguageQuery);
-
+                SingleResult<PrLanguage> language = await _aggregator.ByIdPrLanguageQuery(prLanguageQuery);
                 return Ok(language);
             }
             catch (Exception ex)
@@ -78,7 +76,7 @@ namespace ProgrammingOData.API.Controllers
                     createLanguage = createLanguage
                 };
 
-                return await _mediator.Send(createPrLanguageCommand);
+                return await _aggregator.CreatePrLanguage(createPrLanguageCommand);
             }
             catch (Exception ex)
             {
@@ -97,7 +95,7 @@ namespace ProgrammingOData.API.Controllers
                     updateLanguage = updateLanguage
                 };
 
-                return await _mediator.Send(updatePrLanguageCommand);
+                return await _aggregator.UpdatePrLanguage(updatePrLanguageCommand);
             }
             catch (Exception ex)
             {
@@ -116,7 +114,7 @@ namespace ProgrammingOData.API.Controllers
                     deleteLanguage = new DeleteByIdDTO { Id = key } 
                 };
 
-                return await _mediator.Send(deletePrLanguageCommand);
+                return await _aggregator.DeletePrLanguage(deletePrLanguageCommand);
             }
             catch (Exception ex)
             {

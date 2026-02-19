@@ -1,15 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Hosting;
-using ProgrammingOData.API.Helpers;
-using ProgrammingOData.API.Helpers.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Infrastructure.Repositories;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Commands;
 
-public class UpdatePrLanguageDescCommandHandler : IRequestHandler<UpdatePrLanguageDescCommand, IActionResult>
+public class UpdatePrLanguageDescCommandHandler : UseCaseBase<UpdatePrLanguageDescCommand, IActionResult>
 {
     private readonly IPRLanguageDescriptionRepository _prLanguageDescRepository;
 
@@ -18,7 +14,7 @@ public class UpdatePrLanguageDescCommandHandler : IRequestHandler<UpdatePrLangua
         _prLanguageDescRepository = prLanguageDescRepository;
     }
 
-    public async Task<IActionResult> Handle(UpdatePrLanguageDescCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(UpdatePrLanguageDescCommand request)
     {
         try
         {

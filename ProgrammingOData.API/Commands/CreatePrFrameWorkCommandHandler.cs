@@ -1,14 +1,11 @@
-﻿using MediatR;
+﻿using UseCaseCore.UseCases;
 using Microsoft.AspNetCore.Mvc;
-using ProgrammingOData.API.Helpers;
-using ProgrammingOData.API.Helpers.Enums;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Infrastructure.Repositories;
 using ProgrammingOData.Models.Entities;
 
 namespace ProgrammingOData.API.Commands;
 
-public class CreatePrFrameWorkCommandHandler : IRequestHandler<CreatePrFrameWorkCommand, IActionResult>
+public class CreatePrFrameWorkCommandHandler : UseCaseBase<CreatePrFrameWorkCommand, IActionResult>
 {
     private readonly IPRFrameworkRepository _pRFrameworkRepository;
     private readonly IPRLanguageRepository _prLanguageRepository;
@@ -20,7 +17,7 @@ public class CreatePrFrameWorkCommandHandler : IRequestHandler<CreatePrFrameWork
         _prLanguageRepository=prLanguageRepository;
     }
 
-    public async Task<IActionResult> Handle(CreatePrFrameWorkCommand request, CancellationToken cancellationToken)
+    public override async Task<IActionResult> Execute(CreatePrFrameWorkCommand request)
     {
         try
         {

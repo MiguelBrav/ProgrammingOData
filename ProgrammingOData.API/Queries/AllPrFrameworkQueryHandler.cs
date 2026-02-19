@@ -1,10 +1,10 @@
-﻿using MediatR;
-using ProgrammingOData.Domain.Interfaces;
+﻿using ProgrammingOData.Domain.Interfaces;
 using ProgrammingOData.Models.Entities;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class AllPrFrameworkQueryHandler : IRequestHandler<AllPrFrameworkQuery, IQueryable<PrFramework>>
+public class AllPrFrameworkQueryHandler : UseCaseBase<AllPrFrameworkQuery, IQueryable<PrFramework>>
 {
     private readonly IPRFrameworkRepository _prFrameworkRepository;
 
@@ -19,9 +19,8 @@ public class AllPrFrameworkQueryHandler : IRequestHandler<AllPrFrameworkQuery, I
         _defaultLocale = _configuration.GetValue<string>("DefaultLocale") ?? string.Empty;
     }
 
-    public async Task<IQueryable<PrFramework>> Handle(AllPrFrameworkQuery request, CancellationToken cancellationToken)
+    public override async Task<IQueryable<PrFramework>> Execute(AllPrFrameworkQuery request)
     {
-
         if (string.IsNullOrEmpty(request.Locale))
         {
             request.Locale = _defaultLocale;    

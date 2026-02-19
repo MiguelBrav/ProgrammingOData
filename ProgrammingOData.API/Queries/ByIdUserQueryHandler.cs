@@ -1,13 +1,11 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.OData.Results;
+﻿using Microsoft.AspNetCore.OData.Results;
 using ProgrammingOData.Domain.Interfaces;
-using ProgrammingOData.Models.Entities;
 using ProgrammingOData.Models.Models;
-using System.Configuration;
+using UseCaseCore.UseCases;
 
 namespace ProgrammingOData.API.Queries;
 
-public class ByIdUserQueryHandler : IRequestHandler<ByIdUserQuery, SingleResult<UserRoleDashboard>>
+public class ByIdUserQueryHandler : UseCaseBase<ByIdUserQuery, SingleResult<UserRoleDashboard>>
 {
     private readonly IUserRepository _userRepository;
         public ByIdUserQueryHandler(IUserRepository userRepository)
@@ -15,7 +13,7 @@ public class ByIdUserQueryHandler : IRequestHandler<ByIdUserQuery, SingleResult<
         _userRepository = userRepository;
     }
 
-    public async Task<SingleResult<UserRoleDashboard>> Handle(ByIdUserQuery request, CancellationToken cancellationToken)
+    public override async Task<SingleResult<UserRoleDashboard>> Execute(ByIdUserQuery request)
     {
         UserRoleDashboard user = await _userRepository.GetUserDashById(request.Id);
 
