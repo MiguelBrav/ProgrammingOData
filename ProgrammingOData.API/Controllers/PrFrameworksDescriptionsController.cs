@@ -43,14 +43,13 @@ namespace ProgrammingOData.API.Controllers
 
         [EnableQuery]
         [HttpGet("by")]
-        public async Task<IActionResult> GetById([FromODataUri] int key, [FromQuery] string? locale)
+        public async Task<IActionResult> GetById([FromODataUri] int key)
         {
             try
             {
                 ByIdPrFrameworkDescriptionQuery prFrameworDesckQuery = new ByIdPrFrameworkDescriptionQuery
                 {
-                    Id = key,
-                    Locale = locale
+                    Id = key
                 };
 
                 SingleResult<PrFrameworkDescription> frameworkDesc = await _aggregator.ByIdPrFrameworkDescriptionQuery(prFrameworDesckQuery);
@@ -93,6 +92,25 @@ namespace ProgrammingOData.API.Controllers
                 };
 
                 return await _aggregator.UpdatePrFrameworkDesc(createPrFrameWorkDescCommand);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [HttpDelete]
+        [ServiceFilter(typeof(BasicEditorAuthFilter))]
+        public async Task<IActionResult> DeleteFrameworkDescription([FromODataUri] int key)
+        {
+            try
+            {
+                DeletePrFrameworkDescCommand deletePrFrameworkDescCommand = new DeletePrFrameworkDescCommand
+                {
+                    deleteFramework = new DeleteByIdDTO { Id = key }
+                };
+
+                return await _aggregator.DeletePrFrameworkDesc(deletePrFrameworkDescCommand);
             }
             catch (Exception ex)
             {

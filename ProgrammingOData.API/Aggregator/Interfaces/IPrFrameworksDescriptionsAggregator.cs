@@ -14,4 +14,5 @@ public interface IPrFrameworksDescriptionsAggregator
     Task<SingleResult<PrFrameworkDescription>> ByIdPrFrameworkDescriptionQuery(ByIdPrFrameworkDescriptionQuery request);
     Task<IActionResult> CreatePrFrameworkDesc(CreatePrFrameWorkDescCommand request);
     Task<IActionResult> UpdatePrFrameworkDesc(UpdatePrFrameWorkDescCommand request);
+    Task<IActionResult> DeletePrFrameworkDesc(DeletePrFrameworkDescCommand request);
 }

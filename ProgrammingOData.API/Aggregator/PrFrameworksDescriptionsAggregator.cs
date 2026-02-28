@@ -17,19 +17,22 @@ public class PrFrameworksDescriptionsAggregator : IPrFrameworksDescriptionsAggre
     private readonly ByIdPrFrameworkDescriptionQueryHandler _byIdHandler;
     private readonly CreatePrFrameWorkDescCommandHandler _createHandler;
     private readonly UpdatePrFrameWorkDescCommandHandler _updateHandler;
+    private readonly DeletePrFrameworkDescCommandHandler _deleteHandler;
 
     public PrFrameworksDescriptionsAggregator(
         UseCaseDispatcher dispatcher,
         AllPrFrameworkDescQueryHandler allHandler,
         ByIdPrFrameworkDescriptionQueryHandler byIdHandler,
         CreatePrFrameWorkDescCommandHandler createHandler,
-        UpdatePrFrameWorkDescCommandHandler updateHandler)
+        UpdatePrFrameWorkDescCommandHandler updateHandler,
+        DeletePrFrameworkDescCommandHandler deleteHandler)
     {
         _dispatcher = dispatcher;
         _allHandler = allHandler;
         _byIdHandler = byIdHandler;
         _createHandler = createHandler;
         _updateHandler = updateHandler;
+        _deleteHandler = deleteHandler;
     }
 
     public async Task<IQueryable<PrFrameworkDescription>> AllPrFrameworkDescQuery(AllPrFrameworkDescQuery request)
@@ -43,4 +46,7 @@ public class PrFrameworksDescriptionsAggregator : IPrFrameworksDescriptionsAggre
 
     public async Task<IActionResult> UpdatePrFrameworkDesc(UpdatePrFrameWorkDescCommand request)
         => await _dispatcher.Dispatch(_updateHandler, request);
+
+    public async Task<IActionResult> DeletePrFrameworkDesc(DeletePrFrameworkDescCommand request)
+        => await _dispatcher.Dispatch(_deleteHandler, request);
 }

@@ -11,4 +11,5 @@ public interface IPRFrameworkDescriptionRepository
     Task<List<PrFrameworkDescription>> GetAll();
     Task<int> Create(PrFrameworkDescription frameworkDescription);
     Task Update(PrFrameworkDescription frameworkDescription);
+    Task Delete(int id);
 }

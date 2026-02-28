@@ -112,4 +112,13 @@ public class PRFrameworkDescriptionRepository : IPRFrameworkDescriptionRepositor
         });
     }
 
+    public async Task Delete(int id)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+
+        var sql = @"DELETE FROM prframeworkdescriptions WHERE Id = @Id;";
+
+        await connection.ExecuteAsync(sql, new { Id = id });
+    }
+
 }

@@ -22,12 +22,7 @@ public class ByIdPrFrameworkDescriptionQueryHandler : UseCaseBase<ByIdPrFramewor
 
     public override async Task<SingleResult<PrFrameworkDescription>> Execute(ByIdPrFrameworkDescriptionQuery request)
     {
-        if (string.IsNullOrEmpty(request.Locale))
-        {
-            request.Locale = _defaultLocale;
-        }
-
-        PrFrameworkDescription frameworkDesc = await _pRFrameworkDescRepository.GetByIdAndLocale(request.Id, request.Locale);
+        PrFrameworkDescription frameworkDesc = await _pRFrameworkDescRepository.GetById(request.Id);
 
         IQueryable<PrFrameworkDescription> result = frameworkDesc is not null
              ? new List<PrFrameworkDescription> { frameworkDesc }.AsQueryable()

@@ -54,6 +54,8 @@ builder.Services.AddTransient<UpdatePrFrameWorkCommandHandler>();
 builder.Services.AddTransient<UpdatePrFrameWorkDescCommandHandler>();
 builder.Services.AddTransient<UpdatePrLanguageCommandHandler>();
 builder.Services.AddTransient<UpdatePrLanguageDescCommandHandler>();
+builder.Services.AddTransient<DeletePrFrameworkDescCommandHandler>();
+
 
 // Query handlers
 builder.Services.AddTransient<AllPrFrameworkQueryHandler>();
