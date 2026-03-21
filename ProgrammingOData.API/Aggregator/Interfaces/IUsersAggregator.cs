@@ -18,4 +18,5 @@ public interface IUsersAggregator
     Task<IActionResult> ChangePassword(ChangePswUserCommand request);
     Task<IActionResult> ConfirmPassword(ConfirmPswUserCommand request);
     Task<GlobalStatsResponse> GlobalStats(GlobalStatsQuery request);
+    Task<IActionResult> DeleteUser(DeleteUserCommand request);
 }

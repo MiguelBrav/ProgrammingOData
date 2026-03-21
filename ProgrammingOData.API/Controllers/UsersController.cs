@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Results;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -44,11 +45,12 @@ namespace ProgrammingOData.API.Controllers
         [EnableQuery]
         [HttpGet("id/{userId}")]
         [ServiceFilter(typeof(BasicAdminAuthFilter))]
-        public async Task<IActionResult> GetById(string userId)
+        public async Task<IActionResult> GetById([FromRoute] string userId)
         {
             try
             {
                 ByIdUserQuery userQuery = new ByIdUserQuery();
+                userQuery.Id = userId;
 
                 SingleResult<UserRoleDashboard> user = await _aggregator.ByIdUserQuery(userQuery);
                 return Ok(user);
@@ -184,6 +186,25 @@ namespace ProgrammingOData.API.Controllers
 
                 var result = await _aggregator.GlobalStats(globalQuery);
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred " + ex);
+            }
+        }
+
+        [HttpDelete("id/{userId}")]
+        [ServiceFilter(typeof(BasicAdminAuthFilter))]
+        public async Task<IActionResult> DeleteUser([FromRoute] string userId)
+        {
+            try
+            {
+                DeleteUserCommand deleteUserCommand = new DeleteUserCommand
+                {
+                    UserId = userId
+                };
+
+                return await _aggregator.DeleteUser(deleteUserCommand);
             }
             catch (Exception ex)
             {

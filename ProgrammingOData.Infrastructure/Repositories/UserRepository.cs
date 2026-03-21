@@ -18,6 +18,15 @@ public class UserRepository : IUserRepository
         _connectionString = _configuration.GetConnectionString("MySql") ?? string.Empty;
     }
 
+    public async Task Delete(string userId)
+    {
+        using var connection = new MySqlConnection(_connectionString);
+
+        var sql = @"DELETE FROM users WHERE UserId = @UserId;";
+
+        await connection.ExecuteAsync(sql, new { UserId = userId });
+    }
+
     public async Task<Guid> Create(User user)
     {
         using var connection = new MySqlConnection(_connectionString);
@@ -64,11 +73,14 @@ public class UserRepository : IUserRepository
     public async Task<UserRoleDashboard> GetUserDashById(string userId)
     {
         using var connection = new MySqlConnection(_connectionString);
-        var query = @"SELECT u.UserId, u.Email, u.UserName, u.DateOfBirth, ur.UserRole
-                    FROM users u
-                    INNER JOIN usersrole ur ON u.UserId = ur.UserId";
-        var users = await connection.QueryFirstOrDefaultAsync<UserRoleDashboard>(query);
-        return users;
+        var query = @"
+        SELECT u.UserId, u.Email, u.UserName, u.DateOfBirth, ur.UserRole
+        FROM users u
+        INNER JOIN usersrole ur ON u.UserId = ur.UserId
+        WHERE u.UserId = @UserId
+    ";
+        var user = await connection.QueryFirstOrDefaultAsync<UserRoleDashboard>(query, new { UserId = userId });
+        return user;
     }
 
     public async Task<UserInformation> GetInformacion(string email)

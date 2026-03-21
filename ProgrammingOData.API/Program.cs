@@ -72,6 +72,7 @@ builder.Services.AddTransient<AllUsersQueryHandler>();
 builder.Services.AddTransient<ByIdUserQueryHandler>();
 builder.Services.AddTransient<UserInformationQueryHandler>();
 builder.Services.AddTransient<GlobalStatsQueryHandler>();
+builder.Services.AddTransient<DeleteUserCommandHandler>();
 
 builder.Services.AddScoped<IPRLanguageRepository, PRLenguageRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();

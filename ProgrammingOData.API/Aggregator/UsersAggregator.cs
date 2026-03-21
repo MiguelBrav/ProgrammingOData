@@ -21,6 +21,7 @@ public class UsersAggregator : IUsersAggregator
     private readonly ChangePswUserCommandHandler _changePswHandler;
     private readonly ConfirmPswUserCommandHandler _confirmPswHandler;
     private readonly GlobalStatsQueryHandler _globalStatsHandler;
+    private readonly DeleteUserCommandHandler _deleteUserHandler;
 
     public UsersAggregator(
         UseCaseDispatcher dispatcher,
@@ -32,7 +33,8 @@ public class UsersAggregator : IUsersAggregator
         UserRoleCommandHandler userRoleHandler,
         ChangePswUserCommandHandler changePswHandler,
         ConfirmPswUserCommandHandler confirmPswHandler,
-        GlobalStatsQueryHandler globalStatsHandler)
+        GlobalStatsQueryHandler globalStatsHandler,
+        DeleteUserCommandHandler deleteUserHandler)
     {
         _dispatcher = dispatcher;
         _allUsersHandler = allUsersHandler;
@@ -44,6 +46,7 @@ public class UsersAggregator : IUsersAggregator
         _changePswHandler = changePswHandler;
         _confirmPswHandler = confirmPswHandler;
         _globalStatsHandler = globalStatsHandler;
+        _deleteUserHandler = deleteUserHandler;
     }
 
     public async Task<IQueryable<UserRoleDashboard>> AllUsersQuery(AllUsersQuery request)
@@ -72,4 +75,7 @@ public class UsersAggregator : IUsersAggregator
 
     public async Task<GlobalStatsResponse> GlobalStats(GlobalStatsQuery request)
         => await _dispatcher.Dispatch(_globalStatsHandler, request);
+
+    public async Task<IActionResult> DeleteUser(DeleteUserCommand request)
+        => await _dispatcher.Dispatch(_deleteUserHandler, request);
 }

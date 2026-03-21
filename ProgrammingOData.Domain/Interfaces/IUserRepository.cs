@@ -14,5 +14,6 @@ public interface IUserRepository
     Task<string> ChangePsw(string userId);
     Task<string> GetValidResetUserId(string token);
     Task<string> ConfirmPsw(string userId, string token, string newPassword);
+    Task Delete(string userId);
 
 }
